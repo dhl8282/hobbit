@@ -5,27 +5,29 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 public class MainMenuActivity extends Activity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-	private Button buttonCreateMission;
-	private ImageView mImageView;
-	private GPSTracker gps;
-	private double longitude, latitude;
-	private GoogleMap map;
+    private Button buttonCreateMission, buttonEnterMission;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		addCreateMission();
+		addEnterMission();
 	}
+
+//	@Override
+//	public void onBackPressed() {
+//	    // TODO Auto-generated method stub
+//	    super.onBackPressed();
+//	    Intent intent = new Intent(this, MainMenuActivity.class);
+//        startActivity(intent);
+//	}
 
 	private void addCreateMission() {
 		buttonCreateMission = (Button) findViewById(R.id.buttonCreateMission);
@@ -38,6 +40,17 @@ public class MainMenuActivity extends Activity {
 		});
 	}
 
+	private void addEnterMission() {
+	    buttonEnterMission = (Button) findViewById(R.id.buttonEnterMission);
+	    buttonEnterMission.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showMap();
+            }
+        });
+	}
+
 	private void dispatchTakePictureIntent() {
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -48,41 +61,16 @@ public class MainMenuActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-	        changeLayout();
+	        Intent intent = new Intent(this, CreateMissionActivity.class);
 	        Bundle extras = data.getExtras();
 	        Bitmap imageBitmap = (Bitmap) extras.get("data");
-	        mImageView.setImageBitmap(imageBitmap);
-	        getGPSLocation();
-	        showPicInGoogleMap();
+	        intent.putExtra("picture", imageBitmap);
+	        startActivity(intent);
 	    }
 	}
-	private void changeLayout() {
-	    setContentView(R.layout.activity_picture_preview);
-	    mImageView = (ImageView) findViewById(R.id.imageViewPicPreview);
+
+	private void showMap() {
+	    setContentView(R.layout.map_fragment);;
 	}
 
-	private void getGPSLocation() {
-	    gps = new GPSTracker(this);
-
-        // check if GPS enabled
-        if(gps.canGetLocation()){
-
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
-
-            Log.d("test", "lat is " + latitude);
-            Log.d("test", "long is " + longitude);
-            // \n is for new line
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        }else{
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-        }
-	}
-
-	private void showPicInGoogleMap() {
-
-	}
 }
