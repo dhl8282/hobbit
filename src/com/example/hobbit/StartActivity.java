@@ -1,12 +1,19 @@
 package com.example.hobbit;
 
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,8 +26,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
-public class StartActivity extends Activity {
+public class StartActivity extends FragmentActivity {
 
+    private MainFragment mainFragment;
 	private Button startButton;
 	private EditText inputIdText;
 	private EditText inputPwdText;
@@ -30,6 +38,19 @@ public class StartActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_start);
+
+
+//        if (savedInstanceState == null) {
+//            // Add the fragment on initial activity setup
+//            mainFragment = new MainFragment();
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(android.R.id.content, mainFragment).commit();
+//        } else {
+//            // Or set the fragment from restored state info
+//            mainFragment = (MainFragment) getSupportFragmentManager()
+//                    .findFragmentById(android.R.id.content);
+//        }
         setContentView(R.layout.activity_start);
         addKeyListener();
     }
@@ -89,4 +110,25 @@ public class StartActivity extends Activity {
              System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
 	}
+
+    private void generateHashKeyForFB() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("hobbit",Base64.encodeToString(md.digest(),
+                         Base64.DEFAULT));
+
+            }
+        } catch (NameNotFoundException e) {
+
+            e.printStackTrace();
+
+        } catch (NoSuchAlgorithmException ex) {
+
+            ex.printStackTrace();
+        }
+    }
 }

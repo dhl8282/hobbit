@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class MainMenuActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+			    Log.d("hobbit", "create mission button is clicked");
 			    dispatchTakePictureIntent();
 			}
 		});
@@ -53,6 +55,7 @@ public class MainMenuActivity extends Activity {
 
 	private void dispatchTakePictureIntent() {
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    //Ensure that there's a camera activity to handle the intent
 	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 	        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 	    }
