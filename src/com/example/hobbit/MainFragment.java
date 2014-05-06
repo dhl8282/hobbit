@@ -23,6 +23,7 @@ public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     static final int SIGNIN_OR_SIGNUP_ACTIVITY = 100;
+    static final String FACEBOOK = "facebook";
     private UiLifecycleHelper uiHelper;
 
     private final List<String> permissions;
@@ -62,7 +63,6 @@ public class MainFragment extends Fragment {
                (session.isOpened() || session.isClosed()) ) {
             onSessionStateChange(session, session.getState(), null);
         }
-
         uiHelper.onResume();
     }
 
@@ -124,16 +124,16 @@ public class MainFragment extends Fragment {
                         String firstname = user.getFirstName();
                         String lastname = user.getLastName();
                         String username = user.getUsername();
-//                      String gender = user.getProperty("gender").toString();
-//                      String email = user.asMap().get("email").toString();
-//                      Log.d("hobbit", "id is " + user.getId());
-                        Log.d("hobbit", "name is " + user.getLastName() + " " + user.getFirstName());
+                        User HobbitUser = new User(FACEBOOK, id, lastname, firstname, username);
+                        // TODO : ADD more info
+                        //String email = user.asMap().get("email").toString();
+                        String gender = "";
+                        if (user.getProperty("gender") != null) {
+                            gender = user.getProperty("gender").toString();
+                            HobbitUser.setGender(gender);
+                        }
                         Intent registrationIntent = new Intent(getActivity(), RegistrationActivity.class);
-                        registrationIntent.putExtra("FIRSTNAME", firstname);
-                        registrationIntent.putExtra("LASTNAME", lastname);
-                        registrationIntent.putExtra("USERNAME", username);
-                        registrationIntent.putExtra("SOURCE", "FACEBOOK");
-//                        getActivity().startActivityForResult(registrationIntent, SIGNIN_OR_SIGNUP_ACTIVITY);
+                        registrationIntent.putExtra("hobbitUser", HobbitUser);
                         startActivity(registrationIntent);
                     }
                 }
@@ -141,26 +141,8 @@ public class MainFragment extends Fragment {
                     // Handle errors, will do so later.
                 }
             }
-
-//            protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//                if (requestCode == SIGNIN_OR_SIGNUP_ACTIVITY) {
-//                   if(resultCode == getActivity().RESULT_OK){
-//                       String result=data.getStringExtra("result");
-//                       Log.d("hobbit", "this is the result !!!! + " + result);
-//                   }
-//                   if (resultCode == getActivity().RESULT_CANCELED) {
-//                       //Write your code if there's no result
-//                   }
-//                }
-//            }
         });
-//        boolean callRequest = true;
-//        if (callRequest) {
-            request.executeAsync();
-//            Log.d("hobbit", "one");
-//            callRequest = false;
-//            Log.d("hobbit", "two");
-//        }
+        request.executeAsync();
     }
 
     private Session.StatusCallback callback = new Session.StatusCallback() {

@@ -7,17 +7,43 @@ import android.util.Log;
 
 public class RegistrationActivity extends Activity {
 
+    private User hobbitUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        Intent returnIntent = new Intent();
-        Log.d("hobbit", "it shows this activity is called");
-        String username = getIntent().getExtras().get("SOURCE").toString();
-        Log.d("hobbit", "username is " + username);
-        String result = "this is the result";
-//        returnIntent.putExtra("result",result);
-//        setResult(RESULT_OK,returnIntent);
-//        finish();
+        loginToSystem();
+        goToMainMenu();
+    }
+
+    private void loginToSystem() {
+        hobbitUser = (User) getIntent().getSerializableExtra("hobbitUser");
+        Log.d("hobbit", "Logged in successfully as " + hobbitUser.getFirstname());
+        String userId = hobbitUser.getUserId();
+        if (isNotRegistered(userId)) {
+            registerUser(userId);
+        }
+        login(userId);
+    }
+
+    private boolean isNotRegistered(String userId) {
+        // TODO : implement isNotRegistered
+        return true;
+    }
+
+    private void registerUser(String userId) {
+        // TODO : implement registerUser
+    }
+
+    private void login(String userId){
+        // TODO : implement login
+    }
+    private void goToMainMenu() {
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        if (hobbitUser != null) {
+            intent.putExtra("hobbitUser", hobbitUser);
+        }
+        startActivity(intent);
     }
 }

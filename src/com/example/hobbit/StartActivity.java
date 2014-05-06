@@ -40,23 +40,21 @@ public class StartActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_start);
 
-
-//        if (savedInstanceState == null) {
-//            // Add the fragment on initial activity setup
-//            mainFragment = new MainFragment();
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(android.R.id.content, mainFragment).commit();
-//        } else {
-//            // Or set the fragment from restored state info
-//            mainFragment = (MainFragment) getSupportFragmentManager()
-//                    .findFragmentById(android.R.id.content);
-//        }
+        if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(android.R.id.content, mainFragment).commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (MainFragment) getSupportFragmentManager()
+                    .findFragmentById(android.R.id.content);
+        }
         setContentView(R.layout.activity_start);
         addKeyListener();
     }
 
     private void addKeyListener() {
-
     	inputIdText = (EditText) findViewById(R.id.inputId);
     	inputPwdText = (EditText) findViewById(R.id.inputPwd);
     	startButton = (Button) findViewById(R.id.startButton);
@@ -120,14 +118,10 @@ public class StartActivity extends FragmentActivity {
                 md.update(signature.toByteArray());
                 Log.d("hobbit",Base64.encodeToString(md.digest(),
                          Base64.DEFAULT));
-
             }
         } catch (NameNotFoundException e) {
-
             e.printStackTrace();
-
         } catch (NoSuchAlgorithmException ex) {
-
             ex.printStackTrace();
         }
     }
