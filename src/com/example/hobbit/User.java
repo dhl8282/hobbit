@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class User implements Serializable{
-    public String source, id, lastname, firstname, username, email, gender, userId;
+    private String source, id, lastname, firstname, username, email, gender, userId;
 
     public User(String source, String id, String lastname, String firstname, String username) {
+        super();
         this.source = source;
         this.id = id;
         this.lastname = lastname;

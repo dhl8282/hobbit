@@ -3,6 +3,7 @@ package com.example.hobbit;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,18 +20,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 
 public class CreateMissionActivity extends Activity {
 
+    private static final String TAG = "hobbit" + CreateMissionActivity.class.getSimpleName();
     private GPSTracker gps;
     private ImageView imageViewPicPreview;
     private EditText editTextMissionTitle, editTextHint;
     private Button buttonTouchMe;
     private String missionTitle, hint;
     private double longitude, latitude;
-    private LatLng mark;
     private GoogleMap map;
     private Bitmap imageBitmap;
+    private Mission missionItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +56,18 @@ public class CreateMissionActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                setContentView(R.layout.map_fragment);
                 missionTitle = editTextMissionTitle.getText().toString();
                 hint = editTextHint.getText().toString();
-                setContentView(R.layout.map_fragment);
                 getGPSLocation();
-                mark = new LatLng(latitude, longitude);
-                showPicInGoogleMap(imageBitmap);
+                AppPrefs appPrefs = new AppPrefs(getApplicationContext());
+                String userId = appPrefs.getUser_id();
+                missionItem = new Mission(missionTitle, hint, longitude, latitude);
+                missionItem.setUserId(userId);
+                CreateMissionTask task = new CreateMissionTask(missionItem);
+                task.execute();
+                // TODO : image process in DB
+                showPicInGoogleMap(imageBitmap, missionItem);
             }
         });
     }
@@ -67,13 +77,10 @@ public class CreateMissionActivity extends Activity {
 
         // check if GPS enabled
         if(gps.canGetLocation()){
-
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
-
-            Log.d("hobbitCreateMission", "lat is " + latitude);
-            Log.d("hobbitCreateMission", "long is " + longitude);
-            // \n is for new line
+            Log.d(TAG, "lat is " + latitude);
+            Log.d(TAG, "long is " + longitude);
             Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         }else{
             // can't get location
@@ -83,23 +90,66 @@ public class CreateMissionActivity extends Activity {
         }
     }
 
-    private void showPicInGoogleMap(Bitmap imageBitmap) {
+    private void showPicInGoogleMap(Bitmap imageBitmap, Mission mission) {
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
-
-        if (map!=null){
-          Marker markMarker = map.addMarker(new MarkerOptions()
-              .position(mark)
-              .title(missionTitle)
-              .snippet(hint)
-              .icon(BitmapDescriptorFactory
-                      .fromBitmap(imageBitmap)));
+        LatLng mark = null;
+        if (map != null && mission != null){
+            mark = mission.getMark();
+            Marker markMarker = map.addMarker(new MarkerOptions()
+                .position(mark)
+                .title(mission.getTitle())
+                .snippet(mission.getHint())
+                .icon(BitmapDescriptorFactory
+                        .fromBitmap(imageBitmap)));
         }
 
-      //Move the camera instantly to hamburg with a zoom of 15.
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18));
+        if (mark != null) {
+            //Move the camera instantly to mark with a zoom of 15.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18));
 
-        // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+        }
+    }
+
+    private class CreateMissionTask extends AsyncTask<String, Void, String> {
+        private Mission mMission;
+
+        public CreateMissionTask(Mission mission) {
+            mMission = mission;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            createMissionToDB(mMission);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+//          textView.setText(result);
+        }
+    }
+
+    private void createMissionToDB(Mission mission) {
+        Database mongoDB = new Database();
+        Log.d(TAG, "mongo db connected successfully");
+        if (mongoDB != null && mission != null) {
+            DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
+            BasicDBObject document = new BasicDBObject();
+            document.put("userId", mission.getUserId());
+            document.put("title", mission.getTitle());
+            document.put("hint", mission.getHint());
+            document.put("lng", mission.getLongitude());
+            document.put("lat", mission.getLatitude());
+            collection.insert(document);
+            Log.d(TAG, "Mission is created in DB");
+//            Log.d("hobbitCreateMissionActivity", "mongo db count is " + coll.getCount());
+//            DBCursor cursor = coll.find();
+//            while (cursor.hasNext()) {
+//                Log.d("hobbitStart", "user name is @@@@@ " + cursor.next());
+//            }
+        }
     }
 }

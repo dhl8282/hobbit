@@ -2,27 +2,35 @@ package com.example.hobbit;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.mongodb.DBCollection;
+
 public class RegistrationActivity extends Activity {
 
+    private static final String TAG = "hobbit" + RegistrationActivity.class.getSimpleName();
     private User hobbitUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        VerifyUserTask task = new VerifyUserTask();
+        task.execute();
         loginToSystem();
         goToMainMenu();
     }
 
     private void loginToSystem() {
         hobbitUser = (User) getIntent().getSerializableExtra("hobbitUser");
-        Log.d("hobbit", "Logged in successfully as " + hobbitUser.getFirstname());
+        Log.d(TAG, "Logged in successfully as " + hobbitUser.getFirstname());
         String userId = hobbitUser.getUserId();
         if (isNotRegistered(userId)) {
             registerUser(userId);
+            AppPrefs appPrefs = new AppPrefs(getApplicationContext());
+            appPrefs.setUser_id(userId);
         }
         login(userId);
     }
@@ -45,5 +53,29 @@ public class RegistrationActivity extends Activity {
             intent.putExtra("hobbitUser", hobbitUser);
         }
         startActivity(intent);
+    }
+
+    private class VerifyUserTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String inputId = "";
+            String inputPwd = "";
+            verifyIdPwd(inputId, inputPwd);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+//          textView.setText(result);
+        }
+    }
+
+    private void verifyIdPwd(String inputId, String inputPwd) {
+        Database mongoDB = new Database();
+        if (mongoDB != null) {
+            DBCollection coll = mongoDB.getCollection(Database.COLLECTION_USER);
+            Log.d(TAG, "mongo db collection connected successfully");
+        }
     }
 }

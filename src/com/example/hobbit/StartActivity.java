@@ -1,6 +1,5 @@
 package com.example.hobbit;
 
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -10,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
@@ -20,14 +18,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-
 public class StartActivity extends FragmentActivity {
 
+    private static final String TAG = "hobbit" + MainFragment.class.getSimpleName();
     private MainFragment mainFragment;
 	private Button startButton;
 	private EditText inputIdText;
@@ -38,8 +31,7 @@ public class StartActivity extends FragmentActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_start);
-
+        //generateHashKeyForFB();
         if (savedInstanceState == null) {
             // Add the fragment on initial activity setup
             mainFragment = new MainFragment();
@@ -65,49 +57,13 @@ public class StartActivity extends FragmentActivity {
 			public void onClick(View v) {
 				inputId = inputIdText.getText().toString();
 				inputPwd = inputPwdText.getText().toString();
-				Log.d("test", "id is + " + inputId);
-				Log.d("test", "pwd is + " + inputPwd);
-				VerifyUserTask task = new VerifyUserTask();
-			    task.execute();
+				Log.d(TAG, "id is + " + inputId);
+				Log.d(TAG, "pwd is + " + inputPwd);
 				Intent intent = new Intent(context, MainMenuActivity.class);
                 startActivity(intent);
 			}
 		});
     }
-
-    private class VerifyUserTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            verifyIdPwd(inputId, inputPwd);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-//          textView.setText(result);
-        }
-    }
-
-    private void verifyIdPwd(String inputId, String inputPwd) {
-        try {
-            Log.d("hobbitStart", "start mongo");
-            MongoClientURI uri = new MongoClientURI("mongodb://admin:admin@ds029640.mongolab.com:29640/hobbitdb");
-            MongoClient client = new MongoClient(uri);
-            Log.d("hobbitStart", "DB is " + client.toString());
-            DB db = client.getDB(uri.getDatabase());
-            Log.d("hobbitStart", "mongo db connected successfully");
-            DBCollection coll = db.getCollection("users");
-            Log.d("hobbitStart", "mongo db collection connected successfully");
-            Log.d("hobbitStart", "mongo db count is " + coll.getCount());
-            DBCursor cursor = coll.find();
-            while (cursor.hasNext()) {
-                Log.d("hobbitStart", "user name is @@@@@ " + cursor.next());
-            }
-        } catch (UnknownHostException e) {
-             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
-	}
 
     private void generateHashKeyForFB() {
         try {
@@ -116,7 +72,7 @@ public class StartActivity extends FragmentActivity {
 
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("hobbit",Base64.encodeToString(md.digest(),
+                Log.d(TAG,Base64.encodeToString(md.digest(),
                          Base64.DEFAULT));
             }
         } catch (NameNotFoundException e) {

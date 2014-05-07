@@ -21,7 +21,7 @@ import com.facebook.widget.LoginButton;
 
 public class MainFragment extends Fragment {
 
-    private static final String TAG = MainFragment.class.getSimpleName();
+    private static final String TAG = "hobbit" + MainFragment.class.getSimpleName();
     static final int SIGNIN_OR_SIGNUP_ACTIVITY = 100;
     static final String FACEBOOK = "facebook";
     private UiLifecycleHelper uiHelper;
@@ -44,7 +44,7 @@ public class MainFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_start, container, false);
 
-        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
+        LoginButton authButton = (LoginButton) view.findViewById(R.id.login_button);
         authButton.setFragment(this);
         authButton.setReadPermissions(permissions);
 
@@ -70,15 +70,6 @@ public class MainFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SIGNIN_OR_SIGNUP_ACTIVITY) {
-            if(resultCode == getActivity().RESULT_OK){
-                String result=data.getStringExtra("result");
-                Log.d("hobbit", "this is the result !!!! + " + result);
-            }
-            if (resultCode == getActivity().RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-         }
     }
 
     @Override

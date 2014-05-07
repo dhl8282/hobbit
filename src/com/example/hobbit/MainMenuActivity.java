@@ -1,17 +1,33 @@
 package com.example.hobbit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 
 public class MainMenuActivity extends Activity {
 
+    private static final String TAG = "hobbit" + MainMenuActivity.class.getSimpleName();
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private Button buttonCreateMission, buttonEnterMission;
 
@@ -73,7 +89,82 @@ public class MainMenuActivity extends Activity {
 	}
 
 	private void showMap() {
-	    setContentView(R.layout.map_fragment);;
+	    setContentView(R.layout.map_fragment);
+	    GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();
+
+	    GPSTracker gps = new GPSTracker(this);
+	    double latitude = 0;
+	    double longitude = 0;
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            gps.showSettingsAlert();
+        }
+
+        LatLng currentLocation = new LatLng(latitude, longitude);
+
+        if (map != null){
+            Marker markMarker = map.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("You"));
+        }
+
+        if (currentLocation != null) {
+            //Move the camera instantly to mark with a zoom of 12.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+        }
+
+        GetMissionsTask task = new GetMissionsTask(map);
+        task.execute();
 	}
+
+	private List<BasicDBObject> showMissions(GoogleMap map) {
+	    Database mongoDB = new Database();
+	    List<BasicDBObject> missions = new ArrayList<BasicDBObject>();
+        if (mongoDB != null) {
+            DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
+            Log.d(TAG, "mongo db collection connected successfully");
+            DBCursor cursor = collection.find();
+            while (cursor.hasNext()) {
+                BasicDBObject obj = (BasicDBObject) cursor.next();
+                missions.add(obj);
+            }
+        }
+        return missions;
+	}
+
+	private class GetMissionsTask extends AsyncTask<String, Void, List<BasicDBObject>> {
+	    GoogleMap mMap;
+        public GetMissionsTask(GoogleMap map) {
+            mMap = map;
+        }
+
+        @Override
+        protected List<BasicDBObject> doInBackground(String... params) {
+            return showMissions(mMap);
+        }
+
+        @Override
+        protected void onPostExecute(List<BasicDBObject> missions) {
+          Log.d(TAG, "total mission is " + missions.size());
+          for (BasicDBObject obj : missions) {
+              String lat = obj.get("lat").toString();
+              String lng = obj.get("lng").toString();
+              LatLng mark = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+              mMap.addMarker(new MarkerOptions()
+                      .position(mark)
+                      .title(obj.get("title").toString())
+                      .snippet(obj.get("hint").toString()));
+          }
+        }
+    }
 
 }
