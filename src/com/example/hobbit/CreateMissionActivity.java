@@ -141,15 +141,12 @@ public class CreateMissionActivity extends Activity {
             document.put("userId", mission.getUserId());
             document.put("title", mission.getTitle());
             document.put("hint", mission.getHint());
-            document.put("lng", mission.getLongitude());
-            document.put("lat", mission.getLatitude());
+            double[] loc = {mission.getLatitude(), mission.getLongitude()};
+            document.put("loc", loc);
+//            document.put("lng", mission.getLongitude());
+//            document.put("lat", mission.getLatitude());
             collection.insert(document);
             Log.d(TAG, "Mission is created in DB");
-//            Log.d("hobbitCreateMissionActivity", "mongo db count is " + coll.getCount());
-//            DBCursor cursor = coll.find();
-//            while (cursor.hasNext()) {
-//                Log.d("hobbitStart", "user name is @@@@@ " + cursor.next());
-//            }
         }
     }
 }
