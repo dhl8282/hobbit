@@ -8,4 +8,6 @@
     <string name="title_activity_create_mission">CreateMissionActivity</string>
     <string name="fb_app_id">842931692389676</string>
     <string name="google_maps_api">AIzaSyDVl34wmHFG9B4aQTX0vuGRBacViZkeRCc</string>
+    <string name="title_activity_enter_mission">EnterMissionActivity</string>
+
 </resources>
