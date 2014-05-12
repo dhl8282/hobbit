@@ -40,10 +40,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name="com.example.hobbit.EnterMissionActivity"
-            android:label="@string/title_activity_enter_mission" >
-        </activity>
+        <activity android:name="com.example.hobbit.EnterMissionActivity" />
+        <activity android:name="com.example.hobbit.PrepareCreateMissionActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

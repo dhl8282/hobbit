@@ -43,6 +43,13 @@ public class CreateMissionActivity extends Activity {
         showPic();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
+
     private void showPic() {
         imageViewPicPreview = (ImageView) findViewById(R.id.imageViewPicPreview);
         editTextMissionTitle = (EditText) findViewById(R.id.editTextMissionTitle);

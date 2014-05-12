@@ -31,7 +31,7 @@ public class StartActivity extends FragmentActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        generateHashKeyForFB();
+        //generateHashKeyForFB();
         if (savedInstanceState == null) {
             // Add the fragment on initial activity setup
             mainFragment = new MainFragment();
