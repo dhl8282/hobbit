@@ -1,5 +1,7 @@
 package com.example.hobbit;
 
+import org.bson.types.ObjectId;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,12 +37,14 @@ public class CreateMissionActivity extends Activity {
     private GoogleMap map;
     private Bitmap imageBitmap;
     private Mission missionItem;
+    private ObjectId missionId;
+    private String mPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picture_preview);
-        showPic();
+        createMission();
     }
 
     @Override
@@ -50,20 +54,21 @@ public class CreateMissionActivity extends Activity {
         startActivity(intent);
     }
 
-    private void showPic() {
+    private void createMission() {
         imageViewPicPreview = (ImageView) findViewById(R.id.imageViewPicPreview);
         editTextMissionTitle = (EditText) findViewById(R.id.editTextMissionTitle);
         editTextHint = (EditText) findViewById(R.id.editTextHint);
         buttonTouchMe = (Button) findViewById(R.id.buttonTouchMe);
         Intent intent = getIntent();
         imageBitmap = (Bitmap) intent.getExtras().get("picture");
+        mPhotoPath = (String) intent.getExtras().get("path");
         imageViewPicPreview.setImageBitmap(imageBitmap);
 
         buttonTouchMe.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.map_fragment);
+//                setContentView(R.layout.map_fragment);
                 missionTitle = editTextMissionTitle.getText().toString();
                 hint = editTextHint.getText().toString();
                 getGPSLocation();
@@ -73,10 +78,16 @@ public class CreateMissionActivity extends Activity {
                 missionItem.setUserId(userId);
                 CreateMissionTask task = new CreateMissionTask(missionItem);
                 task.execute();
-                // TODO : image process in DB
-                showPicInGoogleMap(imageBitmap, missionItem);
             }
         });
+    }
+
+    private void uploadPhotoToAWSS3() {
+        Intent intent = new Intent(this, S3UploaderActivity.class);
+        intent.putExtra("path", mPhotoPath);
+        intent.putExtra("id", missionId.toString());
+        Log.d(TAG, "S3Uploder is called to upload the photo with unique id from mongodb");
+        startActivity(intent);
     }
 
     private void getGPSLocation() {
@@ -135,7 +146,7 @@ public class CreateMissionActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-//          textView.setText(result);
+            uploadPhotoToAWSS3();
         }
     }
 
@@ -150,10 +161,9 @@ public class CreateMissionActivity extends Activity {
             document.put("hint", mission.getHint());
             double[] loc = {mission.getLatitude(), mission.getLongitude()};
             document.put("loc", loc);
-//            document.put("lng", mission.getLongitude());
-//            document.put("lat", mission.getLatitude());
             collection.insert(document);
-            Log.d(TAG, "Mission is created in DB");
+            missionId = (ObjectId) document.get("_id");
+            Log.d(TAG, "Mission is created in DB with the id " + missionId.toString());
         }
     }
 }

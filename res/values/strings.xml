@@ -5,5 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="fb_app_id">842931692389676</string>
     <string name="google_maps_api">AIzaSyDVl34wmHFG9B4aQTX0vuGRBacViZkeRCc</string>
-
+    <string name="upload_failure_title">Upload Failure</string>
+    <string name="browser_failure_title">Browser Failure</string>
+    <string name="ok">OK</string>
+    <string name="uploading">Uploading…</string>
+    
 </resources>

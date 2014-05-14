@@ -20,8 +20,8 @@ public class PrepareCreateMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + PrepareCreateMissionActivity.class.getSimpleName();
     static final int REQUEST_TAKE_PHOTO = 1;
-    private String mCurrentPhotoPath;
     private Uri mImageUri;
+    private String mPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class PrepareCreateMissionActivity extends Activity {
                         + File.separator
                         + Constants.PICTURE_DIR
                         + Constants.HOBBIT_DIR + timeStamp + ".jpg");
-        mCurrentPhotoPath = "file:" + file.getAbsolutePath();
+        mPhotoPath = file.getAbsolutePath();
         return file;
     }
 
@@ -59,6 +59,7 @@ public class PrepareCreateMissionActivity extends Activity {
         }
     }
 
+
     public Bitmap grabImage()
     {
         this.getContentResolver().notifyChange(mImageUri, null);
@@ -70,7 +71,7 @@ public class PrepareCreateMissionActivity extends Activity {
             // TODO : rotate image
             // bitmap = ExifUtil.rotateBitmap(mCurrentPhotoPath, bitmap);
             scaledBitmap = Bitmap.createScaledBitmap(bitmap, 200, 300, true);
-            Log.d(TAG, "Photo is saved in " + mCurrentPhotoPath);
+            Log.d(TAG, "Photo is saved in " + mPhotoPath);
             return scaledBitmap;
         }
         catch (Exception e)
@@ -94,6 +95,7 @@ public class PrepareCreateMissionActivity extends Activity {
             Intent intent = new Intent(this, CreateMissionActivity.class);
             Bitmap bitmap = grabImage();
             intent.putExtra("picture", bitmap);
+            intent.putExtra("path", mPhotoPath);
             startActivity(intent);
         }
         super.onActivityResult(requestCode, resultCode, data);
