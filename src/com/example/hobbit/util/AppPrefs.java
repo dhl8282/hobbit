@@ -1,18 +1,18 @@
-package com.example.hobbit;
+package com.example.hobbit.util;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AppPrefs {
-    private static final String USER_PREFS = "USER_PREFS";
+    private static final String USER_INFO = "user_info";
     private SharedPreferences appSharedPrefs;
     private SharedPreferences.Editor prefsEditor;
     private String user_name = "user_name_prefs";
     private String user_id = "user_id_prefs";
 
     public AppPrefs(Context context){
-        this.appSharedPrefs = context.getSharedPreferences(USER_PREFS, Activity.MODE_PRIVATE);
+        this.appSharedPrefs = context.getSharedPreferences(USER_INFO, Activity.MODE_PRIVATE);
         this.prefsEditor = appSharedPrefs.edit();
     }
 

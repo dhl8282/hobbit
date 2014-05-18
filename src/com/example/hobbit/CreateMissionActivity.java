@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.hobbit.util.AppPrefs;
+import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.Database;
+import com.example.hobbit.util.GPSTracker;
+import com.example.hobbit.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -37,7 +42,7 @@ public class CreateMissionActivity extends Activity {
     private GoogleMap map;
     private Bitmap imageBitmap;
     private Mission missionItem;
-    private ObjectId missionId;
+    private ObjectId missionAndPhotoId;
     private String mPhotoPath;
 
     @Override
@@ -82,11 +87,12 @@ public class CreateMissionActivity extends Activity {
         });
     }
 
-    private void uploadPhotoToAWSS3() {
+    private void uploadPhotoToAWSS3(Mission mission) {
         Intent intent = new Intent(this, S3UploaderActivity.class);
         intent.putExtra("path", mPhotoPath);
-        intent.putExtra("id", missionId.toString());
+        intent.putExtra("id", missionAndPhotoId.toString());
         Log.d(TAG, "S3Uploder is called to upload the photo with unique id from mongodb");
+        intent.putExtra(Constants.INTENT_GET_MISSION, mission);
         startActivity(intent);
     }
 
@@ -146,7 +152,7 @@ public class CreateMissionActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            uploadPhotoToAWSS3();
+            uploadPhotoToAWSS3(mMission);
         }
     }
 
@@ -162,8 +168,8 @@ public class CreateMissionActivity extends Activity {
             double[] loc = {mission.getLatitude(), mission.getLongitude()};
             document.put("loc", loc);
             collection.insert(document);
-            missionId = (ObjectId) document.get("_id");
-            Log.d(TAG, "Mission is created in DB with the id " + missionId.toString());
+            missionAndPhotoId = (ObjectId) document.get("_id");
+            Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
     }
 }

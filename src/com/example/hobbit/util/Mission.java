@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.hobbit.util;
 import java.io.Serializable;
 import java.util.HashSet;
 

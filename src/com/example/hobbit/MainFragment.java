@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hobbit.util.User;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;

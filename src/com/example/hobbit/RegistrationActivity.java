@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.hobbit.util.AppPrefs;
+import com.example.hobbit.util.Database;
+import com.example.hobbit.util.User;
 import com.mongodb.DBCollection;
 
 public class RegistrationActivity extends Activity {

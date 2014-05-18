@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.hobbit.util;
 
 public class Constants {
     public static final String PICTURE_DIR = "/Pictures/";
@@ -10,5 +10,5 @@ public class Constants {
     public static final String PICTURE_BUCKET = "bucket-for-hobbit";
     public static final String PICTURE_NAME = "NameOfThePicture";
 
-
+    public static final String INTENT_GET_MISSION = "intent_mission";
 }

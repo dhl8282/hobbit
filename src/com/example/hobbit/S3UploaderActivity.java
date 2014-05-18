@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.hobbit.util.Constants;
 
 public class S3UploaderActivity extends Activity {
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -55,14 +57,18 @@ public class S3UploaderActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_s3_uploader);
 
         s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
         String filePath = (String) getIntent().getExtras().get("path");
         String id = (String) getIntent().getExtras().get("id");
         new S3PutObjectTask(filePath, id).execute();
+        startMissionActivity();
     }
 
+    private void startMissionActivity() {
+        Intent intent = new Intent(this, MissionActivity.class);
+        startActivity(intent);
+    }
     // Display an Alert message for an error or failure.
     protected void displayAlert(String title, String message) {
 
