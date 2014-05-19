@@ -5,21 +5,13 @@
     tools:context="${packageName}.${activityClass}" >
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:orientation="vertical" >
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Mission Title" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -34,7 +26,87 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
-
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonStart"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginLeft="23dp"
+        android:text="Start" />
+    
+    <Button
+        android:id="@+id/buttonKeep"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_toRightOf="@+id/buttonSucceed"
+        android:text="Keep" />
+
+    <Button
+        android:id="@+id/buttonSucceed"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_toRightOf="@+id/buttonStart"
+        android:text="Succeed pics" />
+
+    <Button
+        android:id="@+id/buttonLike"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_toRightOf="@+id/buttonKeep"
+        android:text="Like" />
+
+    <TextView
+        android:id="@+id/textViewMissionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonStart"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="31dp"
+        android:text="Mission Title" />
+
+    <TextView
+        android:id="@+id/textViewHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonStart"
+        android:layout_below="@+id/buttonStart"
+        android:layout_marginTop="18dp"
+        android:text="Hint:" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewHint"
+        android:layout_below="@+id/textViewHint"
+        android:layout_marginTop="39dp"
+        android:text="Marker1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="20dp"
+        android:text="Comments" />
+
+    <TextView
+        android:id="@+id/textViewHintContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewHint"
+        android:layout_below="@+id/textViewHint"
+        android:text="TextViewHintContent" />
 
 </RelativeLayout>

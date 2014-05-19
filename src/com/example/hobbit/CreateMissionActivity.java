@@ -73,14 +73,14 @@ public class CreateMissionActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-//                setContentView(R.layout.map_fragment);
                 missionTitle = editTextMissionTitle.getText().toString();
                 hint = editTextHint.getText().toString();
                 getGPSLocation();
                 AppPrefs appPrefs = new AppPrefs(getApplicationContext());
-                String userId = appPrefs.getUser_id();
                 missionItem = new Mission(missionTitle, hint, longitude, latitude);
+                String userId = appPrefs.getUser_id();
                 missionItem.setUserId(userId);
+                missionItem.setLocalPhotoPath(mPhotoPath);
                 CreateMissionTask task = new CreateMissionTask(missionItem);
                 task.execute();
             }
@@ -89,10 +89,8 @@ public class CreateMissionActivity extends Activity {
 
     private void uploadPhotoToAWSS3(Mission mission) {
         Intent intent = new Intent(this, S3UploaderActivity.class);
-        intent.putExtra("path", mPhotoPath);
-        intent.putExtra("id", missionAndPhotoId.toString());
+        intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
         Log.d(TAG, "S3Uploder is called to upload the photo with unique id from mongodb");
-        intent.putExtra(Constants.INTENT_GET_MISSION, mission);
         startActivity(intent);
     }
 
@@ -119,7 +117,7 @@ public class CreateMissionActivity extends Activity {
                 .getMap();
         LatLng mark = null;
         if (map != null && mission != null){
-            mark = mission.getMark();
+            mark = new LatLng(mission.getLatitude(), mission.getLongitude());
             Marker markMarker = map.addMarker(new MarkerOptions()
                 .position(mark)
                 .title(mission.getTitle())
@@ -169,6 +167,7 @@ public class CreateMissionActivity extends Activity {
             document.put("loc", loc);
             collection.insert(document);
             missionAndPhotoId = (ObjectId) document.get("_id");
+            mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
     }

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
@@ -35,6 +36,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.Mission;
 
 public class S3UploaderActivity extends Activity {
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -50,23 +52,24 @@ public class S3UploaderActivity extends Activity {
     private AmazonS3Client s3Client = new AmazonS3Client(
             new BasicAWSCredentials(Constants.AWS_ACCESS_KEY_ID,
                     Constants.AWS_SECRET_KEY));
-
+    private static final String TAG = "hobbit" + S3UploaderActivity.class.getSimpleName();
     private static final int PHOTO_SELECTED = 1;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
-        String filePath = (String) getIntent().getExtras().get("path");
-        String id = (String) getIntent().getExtras().get("id");
-        new S3PutObjectTask(filePath, id).execute();
-        startMissionActivity();
+        Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
+        String filePath = mission.getLocalPhotoPath();
+        String id = mission.getMongoDBId();
+        new S3PutObjectTask(filePath, id, mission).execute();
+        Log.d("TAG", "Photo is uploaded to AWS S3");
     }
 
-    private void startMissionActivity() {
+    private void startMissionActivity(Mission mission) {
         Intent intent = new Intent(this, MissionActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
         startActivity(intent);
     }
     // Display an Alert message for an error or failure.
@@ -110,10 +113,12 @@ public class S3UploaderActivity extends Activity {
 
         ProgressDialog dialog;
         private String mFilePath, mId;
+        private Mission mMission = new Mission();
 
-        public S3PutObjectTask(String filePath, String id) {
+        public S3PutObjectTask(String filePath, String id, Mission mission) {
             mFilePath = filePath;
             mId = id;
+            mMission = mission;
        }
 
         protected void onPreExecute() {
@@ -146,7 +151,9 @@ public class S3UploaderActivity extends Activity {
                         in, metadata);
                 // Make the picture public
                 por.setCannedAcl(CannedAccessControlList.PublicRead);
-                result.setUri(makeUrl(mId));
+                String url = makeUrl(mId);
+                result.setUri(url);
+                mMission.setPhotoUrl(url);
                 s3Client.putObject(por);
             } catch (Exception exception) {
 
@@ -163,11 +170,12 @@ public class S3UploaderActivity extends Activity {
                                 .getString(R.string.upload_failure_title),
                         result.getErrorMessage());
             }
+            startMissionActivity(mMission);
         }
     }
 
     private String makeUrl(String id) {
-        return Constants.HTTP_US_WEST_2 + "/" + Constants.PICTURE_BUCKET + "/" + id;
+    	return Constants.HTTP_US_WEST_2 + "/" + Constants.PICTURE_BUCKET + "/" + id;
     }
 
     private class S3TaskResult {

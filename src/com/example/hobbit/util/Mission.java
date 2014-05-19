@@ -2,13 +2,10 @@ package com.example.hobbit.util;
 import java.io.Serializable;
 import java.util.HashSet;
 
-import com.google.android.gms.maps.model.LatLng;
-
 @SuppressWarnings("serial")
 public class Mission implements Serializable{
-    private String title, hint, picPath, userId;
+    private String title, hint, userId, localPhotoPath, mongoDBId, photoUrl;
     private double longitude, latitude;
-    private LatLng mark;
     private User user;
     private Mission parent = null;
     private HashSet<Mission> children = null;
@@ -23,7 +20,6 @@ public class Mission implements Serializable{
         this.hint = hint;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.mark = new LatLng(latitude, longitude);
     }
 
     public String getUserId() {
@@ -74,14 +70,6 @@ public class Mission implements Serializable{
         this.hint = hint;
     }
 
-    public String getPicPath() {
-        return picPath;
-    }
-
-    public void setPicPath(String picPath) {
-        this.picPath = picPath;
-    }
-
     public double getLongitude() {
         return longitude;
     }
@@ -98,12 +86,27 @@ public class Mission implements Serializable{
         this.latitude = latitude;
     }
 
-    public LatLng getMark() {
-        return mark;
-    }
+	public String getLocalPhotoPath() {
+		return localPhotoPath;
+	}
 
-    public void setMark(LatLng mark) {
-        this.mark = mark;
-    }
+	public void setLocalPhotoPath(String localPhotoPath) {
+		this.localPhotoPath = localPhotoPath;
+	}
 
+	public String getMongoDBId() {
+		return mongoDBId;
+	}
+
+	public void setMongoDBId(String mongoDBId) {
+		this.mongoDBId = mongoDBId;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
 }

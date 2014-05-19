@@ -9,6 +9,7 @@
     <string name="browser_failure_title">Browser Failure</string>
     <string name="ok">OK</string>
     <string name="uploading">Uploading…</string>
+    <string name="loading">Loading…</string>
     <string name="title_activity_mission">MissionActivity</string>
     <string name="hello_world">Hello world!</string>
 
