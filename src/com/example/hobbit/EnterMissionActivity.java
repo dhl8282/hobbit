@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.Database;
 import com.example.hobbit.util.GPSTracker;
+import com.example.hobbit.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -25,33 +33,54 @@ import com.mongodb.DBCursor;
 public class EnterMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + EnterMissionActivity.class.getSimpleName();
+    private LinearLayout mainPageLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showMap();
+//        showMap();
+        showMissionsInList();
+    }
+    
+    private void startMissionActivity(BasicDBObject obj) {
+    	Mission mission = makeMissionFromDB(obj);
+        Intent intent = new Intent(this, MissionActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
+        startActivity(intent);
+    }
+    
+    private Mission makeMissionFromDB(BasicDBObject obj) {
+    	String title = "";
+    	String hint = "";
+    	Double lng, lat;
+		if (obj.get(Constants.MISSON_TITLE) != null) {
+			title = obj.get(Constants.MISSON_TITLE).toString();
+		}
+		if (obj.get(Constants.MISSON_HINT) != null) {
+			hint = obj.get(Constants.MISSON_HINT).toString();
+		}
+		
+		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSON_LOC);
+		lng = (Double) loc.get(0);
+		lat = (Double) loc.get(1);
+		
+		return new Mission(title, hint, lng, lat);
     }
 
+    private void showMissionsInList() {
+    	setContentView(R.layout.main_page);
+    	mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
+    	LatLng currentLocation = getCurrentLocation();
+    	GetMissionsTask task = new GetMissionsTask(this, currentLocation);
+        task.execute();
+    }
+    
     private void showMap() {
         setContentView(R.layout.map_fragment);
         GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
 
-        GPSTracker gps = new GPSTracker(this);
-        double latitude = 0;
-        double longitude = 0;
-
-        // check if GPS enabled
-        if(gps.canGetLocation()){
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
-                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        }else{
-            gps.showSettingsAlert();
-        }
-
-        LatLng currentLocation = new LatLng(latitude, longitude);
+        LatLng currentLocation = getCurrentLocation();
 
         if (map != null){
             Marker markMarker = map.addMarker(new MarkerOptions()
@@ -70,35 +99,69 @@ public class EnterMissionActivity extends Activity {
         task.execute();
     }
 
-    private List<BasicDBObject> showMissions(GoogleMap map, LatLng currentLoc) {
+    private LatLng getCurrentLocation() {
+    	GPSTracker gps = new GPSTracker(this);
+        double latitude = 0;
+        double longitude = 0;
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            gps.showSettingsAlert();
+        }
+
+        return new LatLng(latitude, longitude);
+    }
+    
+    private List<BasicDBObject> showMissions(GoogleMap map, LatLng currentLoc, int missionNumber) {
         Database mongoDB = new Database();
         List<BasicDBObject> missions = new ArrayList<BasicDBObject>();
         if (mongoDB != null) {
             DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
             Log.d(TAG, "mongo db collection connected successfully");
             double[] loc = {currentLoc.latitude , currentLoc.longitude};
-            // TODO : Implement mission show limit
             // Limit to 10 results
-            DBCursor cursor = collection.find( new BasicDBObject( "loc", new BasicDBObject("$near", loc))).limit(10);
+            DBCursor cursor = collection.find( new BasicDBObject( "loc", new BasicDBObject("$near", loc))).limit(missionNumber);
             while (cursor.hasNext()) {
                 BasicDBObject obj = (BasicDBObject) cursor.next();
                 missions.add(obj);
             }
         }
+        Log.d(TAG, "Total " + missions.size() + " missions are returned");
         return missions;
     }
 
     private class GetMissionsTask extends AsyncTask<String, Void, List<BasicDBObject>> {
         GoogleMap mMap;
         LatLng mCurrentLoc;
+        Context mContext;
+        ProgressDialog dialog;
+        
+        public GetMissionsTask(Context context, LatLng currentLoc) {
+        	mContext = context;
+        	mCurrentLoc = currentLoc;
+        }
+        
         public GetMissionsTask(GoogleMap map, LatLng currentLoc) {
             mMap = map;
             mCurrentLoc = currentLoc;
         }
 
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(EnterMissionActivity.this);
+            dialog.setMessage(EnterMissionActivity.this
+                    .getString(R.string.uploading));
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+        
         @Override
         protected List<BasicDBObject> doInBackground(String... params) {
-            return showMissions(mMap, mCurrentLoc);
+            return showMissions(mMap, mCurrentLoc, Constants.DEFAULT_MISSION_NUMBER);
         }
 
         @Override
@@ -107,17 +170,56 @@ public class EnterMissionActivity extends Activity {
                 Log.d(TAG, "No missions are found");
             }
             else {
-                Log.d(TAG, "total mission is " + missions.size());
-                for (BasicDBObject obj : missions) {
-                    BasicDBList loc = (BasicDBList) obj.get("loc");
-                    String lat = loc.get(0).toString();
-                    String lng = loc.get(1).toString();
-                    LatLng mark = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-                    mMap.addMarker(new MarkerOptions()
-                            .position(mark)
-                            .title(obj.get("title").toString())
-                            .snippet(obj.get("hint").toString()));
-                }
+//            		makeMissionMarkersInMap(mMap, missions);
+            	makeMissionList(missions);
+            }
+            dialog.dismiss();
+        }
+        
+        private void makeMissionList(List<BasicDBObject> missions) {
+        	if (missions.size() == 0) {
+        		Log.d(TAG, "No mission returned");
+        		return;
+        	}
+        	
+//        	final TextView[] myTextViews = new TextView[missions.size()];
+        	for (final BasicDBObject obj : missions) {
+				final TextView rowTextView = new TextView(mContext);
+				rowTextView.setPadding(50, 100, 0, 0);
+				
+				String title = "Title is empty";
+				if (obj.get(Constants.MISSON_TITLE) != null) {
+					title = obj.get(Constants.MISSON_TITLE).toString();
+				}
+
+				title += "_" + obj.get(Constants.MISSON_MONGO_DB_ID).toString(); 
+				rowTextView.setText(title);
+				rowTextView.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						startMissionActivity(obj);
+					}
+				});
+
+			    // add the textview to the linearlayout
+				mainPageLinearLayout.addView(rowTextView);
+
+			}
+        	
+        }
+        
+        private void makeMissionMarkersInMap(GoogleMap map, List<BasicDBObject> missions) {
+        	Log.d(TAG, "total mission is " + missions.size());
+            for (BasicDBObject obj : missions) {
+                BasicDBList loc = (BasicDBList) obj.get(Constants.MISSON_LOC);
+                String lat = loc.get(0).toString();
+                String lng = loc.get(1).toString();
+                LatLng mark = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+                map.addMarker(new MarkerOptions()
+                        .position(mark)
+                        .title(obj.get(Constants.MISSON_TITLE).toString())
+                        .snippet(obj.get(Constants.MISSON_HINT).toString()));
             }
         }
     }

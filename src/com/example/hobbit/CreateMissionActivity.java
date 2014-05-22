@@ -160,13 +160,13 @@ public class CreateMissionActivity extends Activity {
         if (mongoDB != null && mission != null) {
             DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
             BasicDBObject document = new BasicDBObject();
-            document.put("userId", mission.getUserId());
-            document.put("title", mission.getTitle());
-            document.put("hint", mission.getHint());
+            document.put(Constants.MISSON_USER_ID, mission.getUserId());
+            document.put(Constants.MISSON_TITLE, mission.getTitle());
+            document.put(Constants.MISSON_HINT, mission.getHint());
             double[] loc = {mission.getLatitude(), mission.getLongitude()};
-            document.put("loc", loc);
+            document.put(Constants.MISSON_LOC, loc);
             collection.insert(document);
-            missionAndPhotoId = (ObjectId) document.get("_id");
+            missionAndPhotoId = (ObjectId) document.get(Constants.MISSON_MONGO_DB_ID);
             mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }

@@ -44,16 +44,17 @@ public class MissionActivity extends Activity {
     	if (mission != null) {
 	    	missionTitle.setText(mission.getTitle());
 	    	hintContent.setText(mission.getHint());
+	    	// TODO : Differentiate show pic from DB to Local
 //	    	new DownloadImageTask(missionImage).execute(mission.getPhotoUrl());
-	    	Log.d(TAG, "Local file path is " + mission.getLocalPhotoPath());
-	    	File imgFile = new  File(mission.getLocalPhotoPath());
-	    	if(imgFile.exists()){
-
-	    	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-	    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
-	    	    missionImage.setImageBitmap(scaledBitmap);
-
-	    	}
+//	    	Log.d(TAG, "Local file path is " + mission.getLocalPhotoPath());
+//	    	File imgFile = new  File(mission.getLocalPhotoPath());
+//	    	if(imgFile.exists()){
+//
+//	    	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//	    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
+//	    	    missionImage.setImageBitmap(scaledBitmap);
+//
+//	    	}
     	}
     }
     

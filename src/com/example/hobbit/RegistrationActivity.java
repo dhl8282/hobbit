@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.hobbit.util.AppPrefs;
+import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.Database;
 import com.example.hobbit.util.User;
 import com.mongodb.DBCollection;
@@ -27,7 +28,7 @@ public class RegistrationActivity extends Activity {
     }
 
     private void loginToSystem() {
-        hobbitUser = (User) getIntent().getSerializableExtra("hobbitUser");
+        hobbitUser = (User) getIntent().getSerializableExtra(Constants.USER_OBJECT);
         Log.d(TAG, "Logged in successfully as " + hobbitUser.getFirstname());
         String userId = hobbitUser.getUserId();
         if (isNotRegistered(userId)) {
@@ -53,7 +54,7 @@ public class RegistrationActivity extends Activity {
     private void goToMainMenu() {
         Intent intent = new Intent(this, MainMenuActivity.class);
         if (hobbitUser != null) {
-            intent.putExtra("hobbitUser", hobbitUser);
+            intent.putExtra(Constants.USER_OBJECT, hobbitUser);
         }
         startActivity(intent);
     }

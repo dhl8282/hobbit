@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.User;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -24,7 +25,7 @@ public class MainFragment extends Fragment {
 
     private static final String TAG = "hobbit" + MainFragment.class.getSimpleName();
     static final int SIGNIN_OR_SIGNUP_ACTIVITY = 100;
-    static final String FACEBOOK = "facebook";
+    
     private UiLifecycleHelper uiHelper;
 
     private final List<String> permissions;
@@ -116,16 +117,16 @@ public class MainFragment extends Fragment {
                         String firstname = user.getFirstName();
                         String lastname = user.getLastName();
                         String username = user.getUsername();
-                        User HobbitUser = new User(FACEBOOK, id, lastname, firstname, username);
+                        User HobbitUser = new User(Constants.FACEBOOK, id, lastname, firstname, username);
                         // TODO : ADD more info
                         //String email = user.asMap().get("email").toString();
                         String gender = "";
-                        if (user.getProperty("gender") != null) {
-                            gender = user.getProperty("gender").toString();
+                        if (user.getProperty(Constants.USER_GENDER) != null) {
+                            gender = user.getProperty(Constants.USER_GENDER).toString();
                             HobbitUser.setGender(gender);
                         }
                         Intent registrationIntent = new Intent(getActivity(), RegistrationActivity.class);
-                        registrationIntent.putExtra("hobbitUser", HobbitUser);
+                        registrationIntent.putExtra(Constants.USER_OBJECT, HobbitUser);
                         startActivity(registrationIntent);
                     }
                 }
