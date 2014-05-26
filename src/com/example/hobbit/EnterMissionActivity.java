@@ -52,6 +52,7 @@ public class EnterMissionActivity extends Activity {
     private Mission makeMissionFromDB(BasicDBObject obj) {
     	String title = "";
     	String hint = "";
+    	String id = "";
     	Double lng, lat;
 		if (obj.get(Constants.MISSON_TITLE) != null) {
 			title = obj.get(Constants.MISSON_TITLE).toString();
@@ -64,7 +65,13 @@ public class EnterMissionActivity extends Activity {
 		lng = (Double) loc.get(0);
 		lat = (Double) loc.get(1);
 		
-		return new Mission(title, hint, lng, lat);
+		id = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
+		Log.d(TAG, "id is " + id);
+		
+		Mission mission = new Mission(title, hint, lng, lat);
+		mission.setPhotoUrl(Constants.makeUrl(id));
+		
+		return mission;
     }
 
     private void showMissionsInList() {

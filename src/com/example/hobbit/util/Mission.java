@@ -4,7 +4,13 @@ import java.util.HashSet;
 
 @SuppressWarnings("serial")
 public class Mission implements Serializable{
-    private String title, hint, userId, localPhotoPath, mongoDBId, photoUrl;
+    private String title = "";
+    private String hint = "";
+    private String userId = "";
+    private String localPhotoPath = "";
+    private String mongoDBId = "";
+    private String photoUrl = "";
+    
     private double longitude, latitude;
     private User user;
     private Mission parent = null;

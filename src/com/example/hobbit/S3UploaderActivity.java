@@ -151,7 +151,7 @@ public class S3UploaderActivity extends Activity {
                         in, metadata);
                 // Make the picture public
                 por.setCannedAcl(CannedAccessControlList.PublicRead);
-                String url = makeUrl(mId);
+                String url = Constants.makeUrl(mId);
                 result.setUri(url);
                 mMission.setPhotoUrl(url);
                 s3Client.putObject(por);
@@ -172,10 +172,6 @@ public class S3UploaderActivity extends Activity {
             }
             startMissionActivity(mMission);
         }
-    }
-
-    private String makeUrl(String id) {
-    	return Constants.HTTP_US_WEST_2 + "/" + Constants.PICTURE_BUCKET + "/" + id;
     }
 
     private class S3TaskResult {
