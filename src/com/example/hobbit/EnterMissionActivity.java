@@ -66,7 +66,6 @@ public class EnterMissionActivity extends Activity {
 		lat = (Double) loc.get(1);
 		
 		id = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
-		Log.d(TAG, "id is " + id);
 		
 		Mission mission = new Mission(title, hint, lng, lat);
 		mission.setPhotoUrl(Constants.makeUrl(id));

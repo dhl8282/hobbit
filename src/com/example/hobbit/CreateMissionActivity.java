@@ -3,6 +3,7 @@ package com.example.hobbit;
 import org.bson.types.ObjectId;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -40,10 +41,10 @@ public class CreateMissionActivity extends Activity {
     private String missionTitle, hint;
     private double longitude, latitude;
     private GoogleMap map;
-    private Bitmap imageBitmap;
+    private Bitmap photoBitmap;
     private Mission missionItem;
     private ObjectId missionAndPhotoId;
-    private String mPhotoPath;
+    private String mPhotoAbsolutePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,9 @@ public class CreateMissionActivity extends Activity {
         editTextHint = (EditText) findViewById(R.id.editTextHint);
         buttonTouchMe = (Button) findViewById(R.id.buttonTouchMe);
         Intent intent = getIntent();
-        imageBitmap = (Bitmap) intent.getExtras().get("picture");
-        mPhotoPath = (String) intent.getExtras().get("path");
-        imageViewPicPreview.setImageBitmap(imageBitmap);
+        photoBitmap = (Bitmap) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_BITMAP);
+        mPhotoAbsolutePath = (String) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_ABS_PATH);
+        imageViewPicPreview.setImageBitmap(photoBitmap);
 
         buttonTouchMe.setOnClickListener(new OnClickListener() {
 
@@ -80,7 +81,7 @@ public class CreateMissionActivity extends Activity {
                 missionItem = new Mission(missionTitle, hint, longitude, latitude);
                 String userId = appPrefs.getUser_id();
                 missionItem.setUserId(userId);
-                missionItem.setLocalPhotoPath(mPhotoPath);
+                missionItem.setLocalPhotoPath(mPhotoAbsolutePath);
                 CreateMissionTask task = new CreateMissionTask(missionItem);
                 task.execute();
             }
@@ -137,11 +138,20 @@ public class CreateMissionActivity extends Activity {
 
     private class CreateMissionTask extends AsyncTask<String, Void, String> {
         private Mission mMission;
+        ProgressDialog dialog;
 
         public CreateMissionTask(Mission mission) {
             mMission = mission;
         }
 
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(CreateMissionActivity.this);
+            dialog.setMessage(CreateMissionActivity.this
+                    .getString(R.string.uploading));
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+        
         @Override
         protected String doInBackground(String... params) {
             createMissionToDB(mMission);
@@ -150,6 +160,7 @@ public class CreateMissionActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
+        	dialog.dismiss();
             uploadPhotoToAWSS3(mMission);
         }
     }
