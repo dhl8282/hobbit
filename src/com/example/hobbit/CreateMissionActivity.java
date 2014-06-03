@@ -79,7 +79,7 @@ public class CreateMissionActivity extends Activity {
                 getGPSLocation();
                 AppPrefs appPrefs = new AppPrefs(getApplicationContext());
                 missionItem = new Mission(missionTitle, hint, longitude, latitude);
-                String userId = appPrefs.getUser_id();
+                String userId = appPrefs.getUserId();
                 missionItem.setUserId(userId);
                 missionItem.setLocalPhotoPath(mPhotoAbsolutePath);
                 CreateMissionTask task = new CreateMissionTask(missionItem);

@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,10 +34,10 @@ public class PrepareCreateMissionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selectImage();
+        showOption();
     }
 
-    private void selectImage() {
+    private void showOption() {
     	 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
  
@@ -89,12 +90,13 @@ public class PrepareCreateMissionActivity extends Activity {
                 mPhotoUri = Uri.fromFile(photoFile);
                 Log.d(TAG, "mImageUri is " + mPhotoUri);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+                
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
-
-    public Bitmap grabImage()
+    
+    private Bitmap grabImage()
     {
         this.getContentResolver().notifyChange(mPhotoUri, null);
         ContentResolver cr = this.getContentResolver();

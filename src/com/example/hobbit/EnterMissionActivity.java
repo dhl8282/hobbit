@@ -52,7 +52,8 @@ public class EnterMissionActivity extends Activity {
     private Mission makeMissionFromDB(BasicDBObject obj) {
     	String title = "";
     	String hint = "";
-    	String id = "";
+    	String userId = "";
+    	String missionId = "";
     	Double lng, lat;
 		if (obj.get(Constants.MISSON_TITLE) != null) {
 			title = obj.get(Constants.MISSON_TITLE).toString();
@@ -60,15 +61,20 @@ public class EnterMissionActivity extends Activity {
 		if (obj.get(Constants.MISSON_HINT) != null) {
 			hint = obj.get(Constants.MISSON_HINT).toString();
 		}
+		if (obj.get(Constants.MISSON_USER_ID) != null) {
+			userId = obj.get(Constants.MISSON_USER_ID).toString();
+		}
 		
 		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSON_LOC);
 		lng = (Double) loc.get(0);
 		lat = (Double) loc.get(1);
 		
-		id = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
+		missionId = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
 		
 		Mission mission = new Mission(title, hint, lng, lat);
-		mission.setPhotoUrl(Constants.makeUrl(id));
+		mission.setMissionId(missionId);
+		mission.setPhotoUrl(Constants.makeUrl(missionId));
+		mission.setUserId(userId);
 		
 		return mission;
     }

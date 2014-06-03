@@ -12,6 +12,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ public class MissionActivity extends Activity {
 	private static final String TAG = "hobbit" + MissionActivity.class.getSimpleName();
     private TextView missionTitle, hintContent;
     private ImageView missionImage;
+    private Button startMissionButton;
 
     @Override
     public void onBackPressed() {
@@ -39,6 +43,7 @@ public class MissionActivity extends Activity {
         missionTitle = (TextView) findViewById(R.id.textViewMissionTitle);
         hintContent = (TextView) findViewById(R.id.textViewHintContent);
         missionImage = (ImageView) findViewById(R.id.imageViewMissionImage);
+        
         Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         try {
 			showMission(mission);
@@ -46,8 +51,22 @@ public class MissionActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        addStartMissionButton(mission);
     }
 
+    private void addStartMissionButton(final Mission mission) {
+    	startMissionButton = (Button) findViewById(R.id.buttonStart);
+    	startMissionButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				final Intent intent = new Intent(getApplicationContext(), PrepareCreateMissionActivity.class);
+				intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
+				startActivity(intent);
+			}
+		});
+    }
     private void showMission(Mission mission) throws IOException {
     	if (mission != null) {
 	    	missionTitle.setText(mission.getTitle());
@@ -93,19 +112,22 @@ public class MissionActivity extends Activity {
         
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
+            Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
+                bitmap = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-            return mIcon11;
+            return bitmap;
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+        	if (result != null) {
+        		Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
+        		bmImage.setImageBitmap(scaledBitmap);
+        	}
             dialog.dismiss();
         }
     }

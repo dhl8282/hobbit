@@ -8,26 +8,45 @@ public class AppPrefs {
     private static final String USER_INFO = "user_info";
     private SharedPreferences appSharedPrefs;
     private SharedPreferences.Editor prefsEditor;
-    private String user_name = "user_name_prefs";
-    private String user_id = "user_id_prefs";
+    private String mUserName = "user_name_prefs";
+    private String mUserId = "user_id_prefs";
+    private String mParentUserId = "parent_user_id_prefs";
+    private String mParentMissionId = "parent_mission_id_prefs";
 
     public AppPrefs(Context context){
         this.appSharedPrefs = context.getSharedPreferences(USER_INFO, Activity.MODE_PRIVATE);
         this.prefsEditor = appSharedPrefs.edit();
     }
 
-    public String getUser_id() {
-        return appSharedPrefs.getString(user_id, "unknown");
+    public String getUserId() {
+        return appSharedPrefs.getString(mUserId, "unknown");
     }
 
-    public void setUser_id(String _user_id) {
-        prefsEditor.putString(user_id, _user_id).commit();
+    public void setUserId(String userId) {
+        prefsEditor.putString(mUserId, userId).commit();
     }
-    public String getUser_name() {
-        return appSharedPrefs.getString(user_name, "unknown");
+    
+    public String getUserName() {
+        return appSharedPrefs.getString(mUserName, "unknown");
     }
 
-    public void setUser_name(String _user_name) {
-        prefsEditor.putString(user_name, _user_name).commit();
+    public void setUserName(String userName) {
+        prefsEditor.putString(mUserName, userName).commit();
     }
+    
+    public String getParentUserId() {
+        return appSharedPrefs.getString(mParentUserId, "unknown");
+    }
+
+    public void setParentUserId(String parentUserId) {
+        prefsEditor.putString(mParentUserId, parentUserId).commit();
+    }
+    
+    public String getParentMissionId() {
+        return appSharedPrefs.getString(mParentMissionId, "unknown");
+    }
+
+    public void setParentId(String parentMissionId) {
+        prefsEditor.putString(mParentMissionId, parentMissionId).commit();
+    }    
 }

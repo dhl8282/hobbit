@@ -34,7 +34,7 @@ public class RegistrationActivity extends Activity {
         if (isNotRegistered(userId)) {
             registerUser(userId);
             AppPrefs appPrefs = new AppPrefs(getApplicationContext());
-            appPrefs.setUser_id(userId);
+            appPrefs.setUserId(userId);
         }
         login(userId);
     }
