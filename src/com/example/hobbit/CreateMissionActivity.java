@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 public class CreateMissionActivity extends Activity {
 
@@ -45,11 +46,19 @@ public class CreateMissionActivity extends Activity {
     private Mission missionItem;
     private ObjectId missionAndPhotoId;
     private String mPhotoAbsolutePath;
+    private Mission parentMission = null;
+    private boolean hasParentMission = false;
+    private Database mongoDB = null;
+    private DBCollection parentCollection = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picture_preview);
+        if (getIntent().hasExtra(Constants.INTENT_EXTRA_PARENT_MISSION)) {
+			parentMission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_PARENT_MISSION);
+			hasParentMission = true;
+        }
         createMission();
     }
 
@@ -69,6 +78,10 @@ public class CreateMissionActivity extends Activity {
         photoBitmap = (Bitmap) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_BITMAP);
         mPhotoAbsolutePath = (String) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_ABS_PATH);
         imageViewPicPreview.setImageBitmap(photoBitmap);
+        
+        if(parentMission != null) {
+        	editTextMissionTitle.setText("Re :" + parentMission.getTitle());
+        }
 
         buttonTouchMe.setOnClickListener(new OnClickListener() {
 
@@ -79,11 +92,16 @@ public class CreateMissionActivity extends Activity {
                 getGPSLocation();
                 AppPrefs appPrefs = new AppPrefs(getApplicationContext());
                 missionItem = new Mission(missionTitle, hint, longitude, latitude);
+                if (parentMission != null) {
+                	missionItem.setParentInfo(parentMission);
+                }
                 String userId = appPrefs.getUserId();
                 missionItem.setUserId(userId);
                 missionItem.setLocalPhotoPath(mPhotoAbsolutePath);
-                CreateMissionTask task = new CreateMissionTask(missionItem);
-                task.execute();
+                CreateMissionTask createMissionTask = new CreateMissionTask(missionItem);
+                createMissionTask.execute();
+                UpdateMissionTask updateMissionTask = new UpdateMissionTask();
+                updateMissionTask.execute(parentMission.getMissionId());
             }
         });
     }
@@ -166,20 +184,74 @@ public class CreateMissionActivity extends Activity {
     }
 
     private void createMissionToDB(Mission mission) {
-        Database mongoDB = new Database();
+        mongoDB = new Database();
         Log.d(TAG, "mongo db connected successfully");
         if (mongoDB != null && mission != null) {
-            DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
+            parentCollection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
+            DBCollection replyMissionCollection;
+            
             BasicDBObject document = new BasicDBObject();
             document.put(Constants.MISSON_USER_ID, mission.getUserId());
             document.put(Constants.MISSON_TITLE, mission.getTitle());
             document.put(Constants.MISSON_HINT, mission.getHint());
+            document.put(Constants.MISSON_COUNT_VIEW, 0);
+            document.put(Constants.MISSON_COUNT_TRY, 0);
+            document.put(Constants.MISSON_COUNT_SUCCESS, 0);
+            document.put(Constants.MISSON_COUNT_FAIL, 0);
             double[] loc = {mission.getLatitude(), mission.getLongitude()};
             document.put(Constants.MISSON_LOC, loc);
-            collection.insert(document);
+            if (hasParentMission) {
+            	document.put(Constants.MISSON_PARENT_MISSION_ID, parentMission.getMissionId());
+            	document.put(Constants.MISSON_PARENT_USER_ID, parentMission.getUserId());
+            	replyMissionCollection = mongoDB.getCollection(Database.COLLECTION_MISSION_REPLY);
+            	replyMissionCollection.insert(document);
+            } else {
+            	parentCollection.insert(document);
+            }
+            
+            updateParentMissionToDB(parentCollection);
             missionAndPhotoId = (ObjectId) document.get(Constants.MISSON_MONGO_DB_ID);
             mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
+    }
+    
+    private void updateParentMissionToDB(DBCollection collection) {
+    	if (!hasParentMission) {
+    		return;
+    	}
+    	BasicDBObject newDocument = 
+    			new BasicDBObject().append("$inc", 
+    			new BasicDBObject().append(Constants.MISSON_COUNT_TRY, 1));
+    	 
+		collection.update(new BasicDBObject().append(Constants.MISSON_MONGO_DB_ID, parentMission.getMissionId()), newDocument);
+//    	collection.find( { Constants.MISSON_MONGO_DB_ID: parentMission.getMissionId()});
+    }
+    
+    private class UpdateMissionTask extends AsyncTask<String, Void, String> {
+
+    	private void updateParentMissionToDB(String missionId) {
+        	if (!hasParentMission || mongoDB == null || parentCollection == null) {
+        		return;
+        	}
+    	    BasicDBObject query = new BasicDBObject();
+    	    query.put(Constants.MISSON_MONGO_DB_ID, new ObjectId(missionId));
+    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSON_COUNT_TRY, Constants.ONE);
+    	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
+    	    parentCollection.update(query, intModifier);
+        }
+    	
+		@Override
+		protected String doInBackground(String... params) {
+			Log.d(TAG, "Mission to be updated is " + params[0]);
+			updateParentMissionToDB(params[0]);
+			return null;
+		}
+    	
+		@Override
+		protected void onPostExecute(String result) {
+			Log.d(TAG, "Parent mission try count is updated");
+			super.onPostExecute(result);
+		}
     }
 }

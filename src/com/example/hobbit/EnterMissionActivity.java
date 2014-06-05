@@ -3,6 +3,8 @@ package com.example.hobbit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,11 +31,14 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 public class EnterMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + EnterMissionActivity.class.getSimpleName();
     private LinearLayout mainPageLinearLayout;
+    private Database mongoDB = null;
+    private DBCollection parentCollection = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,8 @@ public class EnterMissionActivity extends Activity {
 		lat = (Double) loc.get(1);
 		
 		missionId = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
+		UpdateMissionTask task = new UpdateMissionTask();
+		task.execute(missionId);
 		
 		Mission mission = new Mission(title, hint, lng, lat);
 		mission.setMissionId(missionId);
@@ -78,7 +85,7 @@ public class EnterMissionActivity extends Activity {
 		
 		return mission;
     }
-
+    
     private void showMissionsInList() {
     	setContentView(R.layout.main_page);
     	mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
@@ -130,14 +137,14 @@ public class EnterMissionActivity extends Activity {
     }
     
     private List<BasicDBObject> showMissions(GoogleMap map, LatLng currentLoc, int missionNumber) {
-        Database mongoDB = new Database();
+        mongoDB = new Database();
         List<BasicDBObject> missions = new ArrayList<BasicDBObject>();
         if (mongoDB != null) {
-            DBCollection collection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
+            parentCollection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
             Log.d(TAG, "mongo db collection connected successfully");
             double[] loc = {currentLoc.latitude , currentLoc.longitude};
             // Limit to 10 results
-            DBCursor cursor = collection.find( new BasicDBObject( "loc", new BasicDBObject("$near", loc))).limit(missionNumber);
+            DBCursor cursor = parentCollection.find( new BasicDBObject( "loc", new BasicDBObject("$near", loc))).limit(missionNumber);
             while (cursor.hasNext()) {
                 BasicDBObject obj = (BasicDBObject) cursor.next();
                 missions.add(obj);
@@ -147,6 +154,33 @@ public class EnterMissionActivity extends Activity {
         return missions;
     }
 
+    private class UpdateMissionTask extends AsyncTask<String, Void, String> {
+
+    	private void updateParentMissionToDB(String missionId) {
+        	if (parentCollection == null) {
+        		return;
+        	}
+    	    BasicDBObject query = new BasicDBObject();
+    	    query.put(Constants.MISSON_MONGO_DB_ID, new ObjectId(missionId));
+    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSON_COUNT_VIEW, Constants.ONE);
+    	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
+    	    parentCollection.update(query, intModifier);
+        }
+    	
+		@Override
+		protected String doInBackground(String... params) {
+			Log.d(TAG, "Mission to be updated is " + params[0]);
+			updateParentMissionToDB(params[0]);
+			return null;
+		}
+    	
+		@Override
+		protected void onPostExecute(String result) {
+			Log.d(TAG, "Parent mission view count is updated");
+			super.onPostExecute(result);
+		}
+    }
+    
     private class GetMissionsTask extends AsyncTask<String, Void, List<BasicDBObject>> {
         GoogleMap mMap;
         LatLng mCurrentLoc;

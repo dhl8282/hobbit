@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.Mission;
 
 public class PrepareCreateMissionActivity extends Activity {
 
@@ -30,10 +31,24 @@ public class PrepareCreateMissionActivity extends Activity {
     static final String FILE_HEADER = "file://";
     private Uri mPhotoUri;
     private String mPhotoAbsolutePath;
+    private Mission parentMission = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         
+		if (getIntent().hasExtra(Constants.INTENT_EXTRA_MISSION)) {
+			parentMission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
+//			Log.d(TAG, parentMission.getHint());
+//			Log.d(TAG, parentMission.getLocalPhotoPath());
+//			Log.d(TAG, parentMission.getMissionId());
+//			Log.d(TAG, parentMission.getMongoDBId());
+//			Log.d(TAG, parentMission.getParentMissionId());
+//			Log.d(TAG, parentMission.getPhotoUrl());
+//			Log.d(TAG, parentMission.getTitle());
+//			Log.d(TAG, parentMission.getUserId());
+        }
+		
         showOption();
     }
 
@@ -125,7 +140,7 @@ public class PrepareCreateMissionActivity extends Activity {
         if(requestCode==REQUEST_TAKE_PHOTO && resultCode==RESULT_OK) {
             // Rescan gallery to fetch newly added photo
         	Log.d(TAG, "Camera is going to be launched for taking photo");
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                     Uri.parse(FILE_HEADER
                             + Environment.getExternalStorageDirectory())));
         } else if(requestCode==REQUEST_LOAD_PHOTO && resultCode==RESULT_OK && data!=null) {
@@ -147,6 +162,10 @@ public class PrepareCreateMissionActivity extends Activity {
         Bitmap bitmap = grabImage();
         intent.putExtra(Constants.INTENT_EXTRA_PHOTO_BITMAP, bitmap);
         intent.putExtra(Constants.INTENT_EXTRA_PHOTO_ABS_PATH, mPhotoAbsolutePath);
+        if(parentMission != null) {
+        	Log.d(TAG, "Put parent mission in extra");
+        	intent.putExtra(Constants.INTENT_EXTRA_PARENT_MISSION, parentMission);
+        }
         startActivity(intent);
         super.onActivityResult(requestCode, resultCode, data);
     }
