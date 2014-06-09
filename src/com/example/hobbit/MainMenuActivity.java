@@ -21,14 +21,6 @@ public class MainMenuActivity extends Activity {
 		addEnterMission();
 	}
 
-//	@Override
-//	public void onBackPressed() {
-//	    // TODO Auto-generated method stub
-//	    super.onBackPressed();
-//	    Intent intent = new Intent(this, MainMenuActivity.class);
-//        startActivity(intent);
-//	}
-
 	private void addCreateMission() {
 	    final Intent prepareCreateMissionIntent = new Intent(this, PrepareCreateMissionActivity.class);
 		buttonCreateMission = (Button) findViewById(R.id.buttonCreateMission);

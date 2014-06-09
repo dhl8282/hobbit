@@ -20,7 +20,7 @@ import android.widget.EditText;
 
 public class StartActivity extends FragmentActivity {
 
-    private static final String TAG = "hobbit" + MainFragment.class.getSimpleName();
+    private static final String TAG = "hobbit" + StartActivity.class.getSimpleName();
     private MainFragment mainFragment;
 	private Button startButton;
 	private EditText inputIdText;
@@ -57,8 +57,6 @@ public class StartActivity extends FragmentActivity {
 			public void onClick(View v) {
 				inputId = inputIdText.getText().toString();
 				inputPwd = inputPwdText.getText().toString();
-				Log.d(TAG, "id is + " + inputId);
-				Log.d(TAG, "pwd is + " + inputPwd);
 				Intent intent = new Intent(context, MainMenuActivity.class);
                 startActivity(intent);
 			}
