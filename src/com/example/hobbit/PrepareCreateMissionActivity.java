@@ -1,5 +1,6 @@
 package com.example.hobbit;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
+import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.ExifUtil;
 import com.example.hobbit.util.Mission;
 
 public class PrepareCreateMissionActivity extends Activity {
@@ -120,8 +122,9 @@ public class PrepareCreateMissionActivity extends Activity {
         {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mPhotoUri);
             // TODO : rotate image
-            // bitmap = ExifUtil.rotateBitmap(mCurrentPhotoPath, bitmap);
-            scaledBitmap = Bitmap.createScaledBitmap(bitmap, 200, 300, true);
+//            bitmap = ExifUtil.rotateBitmap(mPhotoAbsolutePath, bitmap);
+            
+            scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/10, bitmap.getHeight()/10, true);
             Log.d(TAG, "Photo is saved in " + mPhotoAbsolutePath);
             return scaledBitmap;
         }

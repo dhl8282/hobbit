@@ -16,7 +16,6 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.Light" >
         <activity android:name="com.example.hobbit.StartActivity" >
             <intent-filter>
@@ -25,12 +24,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.hobbit.MainMenuActivity" >
+        <activity 
+            android:name="com.example.hobbit.MainMenuActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
         </activity>
-        <activity android:name="com.example.hobbit.RegistrationActivity" />
-        <activity android:name="com.example.hobbit.CreateMissionActivity" />
-        <activity android:name="com.facebook.LoginActivity" />
-
+        <activity android:name="com.example.hobbit.RegistrationActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity android:name="com.example.hobbit.CreateMissionActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity android:name="com.facebook.LoginActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+		<activity android:name="com.example.hobbit.EnterMissionActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity android:name="com.example.hobbit.PrepareCreateMissionActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity android:name="com.example.hobbit.S3UploaderActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity android:name="com.example.hobbit.MissionActivity" 
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api" />
@@ -40,11 +67,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity android:name="com.example.hobbit.EnterMissionActivity" />
-        <activity android:name="com.example.hobbit.PrepareCreateMissionActivity" />
-        <activity android:name="com.example.hobbit.S3UploaderActivity" />
-        <activity android:name="com.example.hobbit.MissionActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
