@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.ExifUtil;
+import com.example.hobbit.util.ImageProcess;
 import com.example.hobbit.util.Mission;
 
 public class PrepareCreateMissionActivity extends Activity {
@@ -121,10 +122,27 @@ public class PrepareCreateMissionActivity extends Activity {
         try
         {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mPhotoUri);
-            // TODO : rotate image
-//            bitmap = ExifUtil.rotateBitmap(mPhotoAbsolutePath, bitmap);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, Constants.DEFAULT_PICTURE_QUALITY, bos);
+            bitmap = ExifUtil.rotateBitmap(mPhotoAbsolutePath, bitmap);
             
-            scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/10, bitmap.getHeight()/10, true);
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            Log.d(TAG, "width is " + width);
+            Log.d(TAG, "height is " + height);
+            int ratio;
+            
+            //picture in portrait mode
+            if (width < height) {
+            	ratio = height / Constants.DEFAULT_PICTURE_LENGTH; 
+            } else { //picture in landscape mode
+            	ratio = width / Constants.DEFAULT_PICTURE_LENGTH;
+            }
+            
+            Log.d(TAG, "ratio is " + ratio);
+            Log.d(TAG, "new width is " + width/ratio);
+            Log.d(TAG, "new height is " + height/ratio);
+        	scaledBitmap = Bitmap.createScaledBitmap(bitmap, width/ratio, height/ratio, true);
             Log.d(TAG, "Photo is saved in " + mPhotoAbsolutePath);
             return scaledBitmap;
         }
@@ -162,7 +180,8 @@ public class PrepareCreateMissionActivity extends Activity {
         }
         
         Intent intent = new Intent(this, CreateMissionActivity.class);
-        Bitmap bitmap = grabImage();
+//        Bitmap bitmap = grabImage();
+        Bitmap bitmap = ImageProcess.getScaledImage(this, mPhotoUri, mPhotoAbsolutePath);
         intent.putExtra(Constants.INTENT_EXTRA_PHOTO_BITMAP, bitmap);
         intent.putExtra(Constants.INTENT_EXTRA_PHOTO_ABS_PATH, mPhotoAbsolutePath);
         if(parentMission != null) {

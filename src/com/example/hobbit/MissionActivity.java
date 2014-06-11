@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.ImageProcess;
 import com.example.hobbit.util.Mission;
 
 public class MissionActivity extends Activity {
@@ -85,7 +86,8 @@ public class MissionActivity extends Activity {
     	if(imgFile.exists()){
 
     	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
+//    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
+    	    Bitmap scaledBitmap = ImageProcess.getScaledImageFromBitmap(myBitmap, localPath);
     	    missionImage.setImageBitmap(scaledBitmap);
     	}
     }

@@ -100,8 +100,10 @@ public class CreateMissionActivity extends Activity {
                 missionItem.setLocalPhotoPath(mPhotoAbsolutePath);
                 CreateMissionTask createMissionTask = new CreateMissionTask(missionItem);
                 createMissionTask.execute();
-                UpdateMissionTask updateMissionTask = new UpdateMissionTask();
-                updateMissionTask.execute(parentMission.getMissionId());
+                if (hasParentMission) {
+                	UpdateMissionTask updateMissionTask = new UpdateMissionTask();
+                    updateMissionTask.execute(parentMission.getMissionId());
+            	}
             }
         });
     }

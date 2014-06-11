@@ -32,8 +32,9 @@ public class Constants {
     public static final String USER_OBJECT = "user_object";
     
     public static final int ONE = 1;
-    
     public static final int DEFAULT_MISSION_NUMBER = 10;
+    public static final int DEFAULT_PICTURE_LENGTH = 360;
+    public static final int DEFAULT_PICTURE_QUALITY = 30;
     
     public static String makeUrl(String id) {
     	return HTTP_US_WEST_2 + "/" + PICTURE_BUCKET + "/" + id;
