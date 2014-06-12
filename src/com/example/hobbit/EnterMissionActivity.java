@@ -66,8 +66,8 @@ public class EnterMissionActivity extends Activity {
 		if (obj.get(Constants.MISSON_HINT) != null) {
 			hint = obj.get(Constants.MISSON_HINT).toString();
 		}
-		if (obj.get(Constants.MISSON_USER_ID) != null) {
-			userId = obj.get(Constants.MISSON_USER_ID).toString();
+		if (obj.get(Constants.USER_ID) != null) {
+			userId = obj.get(Constants.USER_ID).toString();
 		}
 		
 		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSON_LOC);

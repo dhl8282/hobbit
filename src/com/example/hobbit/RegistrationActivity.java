@@ -1,6 +1,9 @@
 package com.example.hobbit;
 
+import org.bson.types.ObjectId;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,21 +12,26 @@ import android.util.Log;
 import com.example.hobbit.util.AppPrefs;
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.Database;
+import com.example.hobbit.util.Mission;
 import com.example.hobbit.util.User;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
 public class RegistrationActivity extends Activity {
 
     private static final String TAG = "hobbit" + RegistrationActivity.class.getSimpleName();
     private User hobbitUser;
+    private Database mongoDB = null;
+    private DBCollection userCollection = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        VerifyUserTask task = new VerifyUserTask();
-        task.execute();
         loginToSystem();
+//        VerifyUserTask task = new VerifyUserTask();
+//        task.execute();
+        CreateUserTask task = new CreateUserTask();
+        task.execute();
         goToMainMenu();
     }
 
@@ -80,6 +88,41 @@ public class RegistrationActivity extends Activity {
         if (mongoDB != null) {
             DBCollection coll = mongoDB.getCollection(Database.COLLECTION_USER);
             Log.d(TAG, "mongo db collection connected successfully");
+        }
+    }
+    
+    private class CreateUserTask extends AsyncTask<String, Void, String> {
+ 
+        @Override
+        protected String doInBackground(String... params) {
+        	createUserToDB(hobbitUser);
+            return null;
+        }
+    }
+
+    private void createUserToDB(User user) {
+        mongoDB = new Database();
+        Log.d(TAG, "mongo db connected successfully");
+        if (mongoDB != null && user != null) {
+            userCollection = mongoDB.getCollection(Database.COLLECTION_USER);
+            
+            BasicDBObject document = new BasicDBObject();
+            document.put(Constants.USER_ID, user.getUserId());
+            document.put(Constants.USER_LAST_NAME, user.getLastname());
+            document.put(Constants.USER_FIRST_NAME, user.getFirstname());
+            document.put(Constants.USER_EMAIL, user.getEmail());
+            document.put(Constants.USER_GENDER, user.getGender());
+            
+            String[] createdMission = {};
+            String[] repliedMission = {};
+            String[] succeedMission = {};
+            String[] failedMission = {};
+            
+            document.put(Constants.USER_CREATED_MISSIONS, createdMission);
+            document.put(Constants.USER_REPLIED_MISSIONS, repliedMission);
+            document.put(Constants.USER_SUCCEED_MISSIONS, succeedMission);
+            document.put(Constants.USER_FAILED_MISSIONS, failedMission);
+            userCollection.insert(document);
         }
     }
 }

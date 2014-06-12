@@ -193,7 +193,7 @@ public class CreateMissionActivity extends Activity {
             DBCollection replyMissionCollection;
             
             BasicDBObject document = new BasicDBObject();
-            document.put(Constants.MISSON_USER_ID, mission.getUserId());
+            document.put(Constants.USER_ID, mission.getUserId());
             document.put(Constants.MISSON_TITLE, mission.getTitle());
             document.put(Constants.MISSON_HINT, mission.getHint());
             document.put(Constants.MISSON_COUNT_VIEW, 0);

@@ -19,7 +19,6 @@ public class Constants {
     public static final String MISSON_TITLE = "title";
     public static final String MISSON_HINT = "hint";
     public static final String MISSON_LOC= "loc";
-    public static final String MISSON_USER_ID = "userId";
     public static final String MISSON_COUNT_VIEW = "view";
     public static final String MISSON_COUNT_TRY = "try";
     public static final String MISSON_COUNT_SUCCESS = "success";
@@ -27,8 +26,18 @@ public class Constants {
     public static final String MISSON_PARENT_MISSION_ID = "parentMissionId";
     public static final String MISSON_PARENT_USER_ID = "parentUserId";
     
+    public static final String USER_ID = "userId";
+    public static final String USER_LAST_NAME = "lastName";
+    public static final String USER_FIRST_NAME = "firstName";
+    public static final String USER_USERNAME = "username";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_GENDER = "gender";
+    public static final String USER_CREATED_MISSIONS = "createdMissions";
+    public static final String USER_REPLIED_MISSIONS = "repliedMissions";
+    public static final String USER_SUCCEED_MISSIONS = "succeedMissions";
+    public static final String USER_FAILED_MISSIONS = "failedMissions";
+    
     public static final String FACEBOOK = "facebook";
-    public static final String USER_GENDER = "user_gender";
     public static final String USER_OBJECT = "user_object";
     
     public static final int ONE = 1;
