@@ -1,9 +1,6 @@
 package com.example.hobbit;
 
-import org.bson.types.ObjectId;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +9,6 @@ import android.util.Log;
 import com.example.hobbit.util.AppPrefs;
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.Database;
-import com.example.hobbit.util.Mission;
 import com.example.hobbit.util.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -30,8 +26,8 @@ public class RegistrationActivity extends Activity {
         loginToSystem();
 //        VerifyUserTask task = new VerifyUserTask();
 //        task.execute();
-        CreateUserTask task = new CreateUserTask();
-        task.execute();
+//        CreateUserTask task = new CreateUserTask();
+//        task.execute();
         goToMainMenu();
     }
 
@@ -90,9 +86,9 @@ public class RegistrationActivity extends Activity {
             Log.d(TAG, "mongo db collection connected successfully");
         }
     }
-    
+
     private class CreateUserTask extends AsyncTask<String, Void, String> {
- 
+
         @Override
         protected String doInBackground(String... params) {
         	createUserToDB(hobbitUser);
@@ -105,19 +101,19 @@ public class RegistrationActivity extends Activity {
         Log.d(TAG, "mongo db connected successfully");
         if (mongoDB != null && user != null) {
             userCollection = mongoDB.getCollection(Database.COLLECTION_USER);
-            
+
             BasicDBObject document = new BasicDBObject();
             document.put(Constants.USER_ID, user.getUserId());
             document.put(Constants.USER_LAST_NAME, user.getLastname());
             document.put(Constants.USER_FIRST_NAME, user.getFirstname());
             document.put(Constants.USER_EMAIL, user.getEmail());
             document.put(Constants.USER_GENDER, user.getGender());
-            
+
             String[] createdMission = {};
             String[] repliedMission = {};
             String[] succeedMission = {};
             String[] failedMission = {};
-            
+
             document.put(Constants.USER_CREATED_MISSIONS, createdMission);
             document.put(Constants.USER_REPLIED_MISSIONS, repliedMission);
             document.put(Constants.USER_SUCCEED_MISSIONS, succeedMission);
