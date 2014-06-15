@@ -20,6 +20,7 @@ import com.example.hobbit.util.AppPrefs;
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.Database;
 import com.example.hobbit.util.GPSTracker;
+import com.example.hobbit.util.ImageProcess;
 import com.example.hobbit.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,7 +31,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 public class CreateMissionActivity extends Activity {
 
@@ -75,10 +75,12 @@ public class CreateMissionActivity extends Activity {
         editTextHint = (EditText) findViewById(R.id.editTextHint);
         buttonTouchMe = (Button) findViewById(R.id.buttonTouchMe);
         Intent intent = getIntent();
-        photoBitmap = (Bitmap) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_BITMAP);
         mPhotoAbsolutePath = (String) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_ABS_PATH);
+        photoBitmap = ImageProcess.getBitmapFromMemCache(mPhotoAbsolutePath);
+        //DiskLruImageCache disk = new DiskLruImageCache(this);
+        //photoBitmap = disk.getBitmap(mPhotoAbsolutePath);
         imageViewPicPreview.setImageBitmap(photoBitmap);
-        
+
         if(parentMission != null) {
         	editTextMissionTitle.setText("Re :" + parentMission.getTitle());
         }
@@ -171,7 +173,7 @@ public class CreateMissionActivity extends Activity {
             dialog.setCancelable(false);
             dialog.show();
         }
-        
+
         @Override
         protected String doInBackground(String... params) {
             createMissionToDB(mMission);
@@ -191,7 +193,7 @@ public class CreateMissionActivity extends Activity {
         if (mongoDB != null && mission != null) {
             parentCollection = mongoDB.getCollection(Database.COLLECTION_PARENT_MISSION);
             DBCollection replyMissionCollection;
-            
+
             BasicDBObject document = new BasicDBObject();
             document.put(Constants.USER_ID, mission.getUserId());
             document.put(Constants.MISSON_TITLE, mission.getTitle());
@@ -210,26 +212,26 @@ public class CreateMissionActivity extends Activity {
             } else {
             	parentCollection.insert(document);
             }
-            
+
             updateParentMissionToDB(parentCollection);
             missionAndPhotoId = (ObjectId) document.get(Constants.MISSON_MONGO_DB_ID);
             mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
     }
-    
+
     private void updateParentMissionToDB(DBCollection collection) {
     	if (!hasParentMission) {
     		return;
     	}
-    	BasicDBObject newDocument = 
-    			new BasicDBObject().append("$inc", 
+    	BasicDBObject newDocument =
+    			new BasicDBObject().append("$inc",
     			new BasicDBObject().append(Constants.MISSON_COUNT_TRY, 1));
-    	 
+
 		collection.update(new BasicDBObject().append(Constants.MISSON_MONGO_DB_ID, parentMission.getMissionId()), newDocument);
 //    	collection.find( { Constants.MISSON_MONGO_DB_ID: parentMission.getMissionId()});
     }
-    
+
     private class UpdateMissionTask extends AsyncTask<String, Void, String> {
 
     	private void updateParentMissionToDB(String missionId) {
@@ -242,14 +244,14 @@ public class CreateMissionActivity extends Activity {
     	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
     	    parentCollection.update(query, intModifier);
         }
-    	
+
 		@Override
 		protected String doInBackground(String... params) {
 			Log.d(TAG, "Mission to be updated is " + params[0]);
 			updateParentMissionToDB(params[0]);
 			return null;
 		}
-    	
+
 		@Override
 		protected void onPostExecute(String result) {
 			Log.d(TAG, "Parent mission try count is updated");

@@ -14,8 +14,12 @@
  */
 package com.example.hobbit;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
@@ -23,6 +27,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,6 +44,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.hobbit.util.Constants;
+import com.example.hobbit.util.ImageProcess;
 import com.example.hobbit.util.Mission;
 
 public class S3UploaderActivity extends Activity {
@@ -61,7 +68,7 @@ public class S3UploaderActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
+        s3Client.setRegion(Region.getRegion(Regions.AP_NORTHEAST_1));
         Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         String filePath = mission.getLocalPhotoPath();
         String id = mission.getMongoDBId();
@@ -69,6 +76,7 @@ public class S3UploaderActivity extends Activity {
         	Log.e(TAG, "Mission id is null");
         }
         new S3PutObjectTask(filePath, id, mission).execute();
+        new S3PutThumnailTask(filePath, id, mission).execute();
         Log.d("TAG", "Photo is uploaded to AWS S3");
     }
 
@@ -114,6 +122,23 @@ public class S3UploaderActivity extends Activity {
         confirm.show().show();
     }
 
+    private File convertBitmapToFile(String missionId, String filePath, int quality) throws IOException {
+      //create a file to write bitmap data
+        File file = File.createTempFile(missionId, null, this.getCacheDir());
+
+        //Convert bitmap to byte array
+        Bitmap bitmap = ImageProcess.getBitmapFromMemCache(filePath);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(CompressFormat.JPEG, quality, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(bitmapdata);
+        fos.close();
+        return file;
+    }
+
     private class S3PutObjectTask extends AsyncTask<Uri, Void, S3TaskResult> {
 
         ProgressDialog dialog;
@@ -136,11 +161,14 @@ public class S3UploaderActivity extends Activity {
 
         protected S3TaskResult doInBackground(Uri... uris) {
             InputStream in = null;
-
             try {
-                in = new FileInputStream(mFilePath);
+                in = new FileInputStream(convertBitmapToFile(mId, mFilePath, Constants.IMAGE_QUALITY_FULL));
+//                in = new FileInputStream(mFilePath);
             } catch (FileNotFoundException e) {
             	Log.e(TAG, "Failed while reading bytes from " + e.getMessage());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -153,11 +181,11 @@ public class S3UploaderActivity extends Activity {
 //              s3Client.createBucket(Constants.getPictureBucket());
             	Log.d(TAG, "mission id is " + mId);
                 PutObjectRequest por = new PutObjectRequest(
-                        Constants.PICTURE_BUCKET, mId,
+                        Constants.PICTURE_BUCKET_ORIGINAL, mId,
                         in, metadata);
                 // Make the picture public
                 por.setCannedAcl(CannedAccessControlList.PublicRead);
-                String url = Constants.makeUrl(mId);
+                String url = Constants.makeOriginalUrl(mId);
                 result.setUri(url);
                 mMission.setPhotoUrl(url);
                 s3Client.putObject(por);
@@ -207,6 +235,60 @@ public class S3UploaderActivity extends Activity {
 
         public void setUri(String uri) {
             this.uri = uri;
+        }
+    }
+
+    private class S3PutThumnailTask extends AsyncTask<Uri, Void, S3TaskResult> {
+
+        ProgressDialog dialog;
+        private String mFilePath, mId;
+        private Mission mMission = new Mission();
+
+        public S3PutThumnailTask(String filePath, String id, Mission mission) {
+            mFilePath = filePath;
+            mId = id;
+            mMission = mission;
+       }
+
+        protected S3TaskResult doInBackground(Uri... uris) {
+            InputStream in = null;
+            try {
+                in = new FileInputStream(convertBitmapToFile(mId, mFilePath, Constants.IMAGE_QUALITY_THUMNAIL));
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, "Failed while reading bytes from " + e.getMessage());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("image/jpeg");
+
+            S3TaskResult result = new S3TaskResult();
+
+            // Put the image data into S3.
+            try {
+                Log.d(TAG, "mission id is " + mId);
+                PutObjectRequest por = new PutObjectRequest(
+                        Constants.PICTURE_BUCKET_THUMNAIL, mId,
+                        in, metadata);
+                // Make the picture public
+                por.setCannedAcl(CannedAccessControlList.PublicRead);
+                String url = Constants.makeThumnailUrl(mId);
+                result.setUri(url);
+                mMission.setPhotoUrl(url);
+                s3Client.putObject(por);
+
+            } catch (AmazonServiceException ase) {
+                Log.e(TAG, "Error Message:    " + ase.getMessage());
+                Log.e(TAG, "HTTP Status Code: " + ase.getStatusCode());
+                Log.e(TAG, "AWS Error Code:   " + ase.getErrorCode());
+                Log.e(TAG, "Error Type:       " + ase.getErrorType());
+                Log.e(TAG, "Request ID:       " + ase.getRequestId());
+            } catch (AmazonClientException ace) {
+                Log.e(TAG, "Error Message: " + ace.getMessage());
+            }
+            return result;
         }
     }
 }

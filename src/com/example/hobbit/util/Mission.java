@@ -11,9 +11,10 @@ public class Mission implements Serializable{
     private String localPhotoPath = "";
     private String mongoDBId = "";
     private String photoUrl = "";
+    private String thumnailUrl = "";
     private String parentMissionId = "None";
     private String parentUserId = "None";
-    
+
     private double longitude, latitude;
     private User user;
     private Mission parent = null;
@@ -119,6 +120,14 @@ public class Mission implements Serializable{
 		this.photoUrl = photoUrl;
 	}
 
+	public String getThumnailUrl() {
+        return thumnailUrl;
+    }
+
+    public void setThumnailUrl(String thumnailUrl) {
+        this.thumnailUrl = thumnailUrl;
+    }
+
 	public String getMissionId() {
 		return missionId;
 	}
@@ -142,7 +151,7 @@ public class Mission implements Serializable{
 	public void setParentMissionId(String parentMissionId) {
 		this.parentMissionId = parentMissionId;
 	}
-	
+
 	public void setParentInfo(Mission parentMission) {
 		setParentMissionId(parentMission.getMissionId());
 		setParentUserId(parentMission.getUserId());

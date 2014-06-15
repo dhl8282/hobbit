@@ -35,7 +35,7 @@ public class MissionActivity extends Activity {
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,7 @@ public class MissionActivity extends Activity {
         missionTitle = (TextView) findViewById(R.id.textViewMissionTitle);
         hintContent = (TextView) findViewById(R.id.textViewHintContent);
         missionImage = (ImageView) findViewById(R.id.imageViewMissionImage);
-        
+
         Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         try {
 			showMission(mission);
@@ -52,14 +52,14 @@ public class MissionActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+
         addStartMissionButton(mission);
     }
 
     private void addStartMissionButton(final Mission mission) {
     	startMissionButton = (Button) findViewById(R.id.buttonStart);
     	startMissionButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				final Intent intent = new Intent(getApplicationContext(), PrepareCreateMissionActivity.class);
@@ -72,7 +72,7 @@ public class MissionActivity extends Activity {
     	if (mission != null) {
 	    	missionTitle.setText(mission.getTitle());
 	    	hintContent.setText(mission.getHint());
-	    	
+
 	    	if (!mission.getLocalPhotoPath().isEmpty()) {
 	    		showPhotoFromLocal(mission.getLocalPhotoPath());
 	    	} else {
@@ -80,22 +80,23 @@ public class MissionActivity extends Activity {
 	    	}
     	}
     }
-    
+
     private void showPhotoFromLocal(String localPath) {
     	File imgFile = new  File(localPath);
     	if(imgFile.exists()){
 
-    	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//    	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 //    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
-    	    Bitmap scaledBitmap = ImageProcess.getScaledImageFromBitmap(myBitmap, localPath);
+//    	    Bitmap scaledBitmap = ImageProcess.getScaledImageFromBitmap(myBitmap, localPath);
+    	    Bitmap scaledBitmap = ImageProcess.getBitmapFromMemCache(localPath);
     	    missionImage.setImageBitmap(scaledBitmap);
     	}
     }
-    
+
     private void showPhotoFromUrl(String url) {
     	new DownloadImageTask(missionImage).execute(url);
     }
-    
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
         ProgressDialog dialog;
@@ -111,7 +112,7 @@ public class MissionActivity extends Activity {
             dialog.setCancelable(false);
             dialog.show();
         }
-        
+
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap bitmap = null;
