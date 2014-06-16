@@ -1,5 +1,6 @@
 package com.example.hobbit;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -250,6 +253,7 @@ public class EnterMissionActivity extends Activity {
 				title += "_" + obj.get(Constants.MISSON_MONGO_DB_ID).toString();
 				rowImageView.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
 //				rowImageView.setImageURI(Uri.parse(Constants.makeThumnailUrl(obj.getString(Constants.MISSON_MONGO_DB_ID))));
+				showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSON_MONGO_DB_ID)));
 				rowTextView.setText(title);
 				rowTextView.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -279,6 +283,38 @@ public class EnterMissionActivity extends Activity {
                         .title(obj.get(Constants.MISSON_TITLE).toString())
                         .snippet(obj.get(Constants.MISSON_HINT).toString()));
             }
+        }
+    }
+    
+    private void showPhotoFromUrl(ImageView imageView, String url) {
+    	new DownloadImageTask(imageView).execute(url);
+    }
+    
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+        	if (result != null) {
+        		Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
+        		bmImage.setImageBitmap(scaledBitmap);
+        	}
         }
     }
 }

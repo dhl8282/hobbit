@@ -84,7 +84,6 @@ public class MissionActivity extends Activity {
     private void showPhotoFromLocal(String localPath) {
     	File imgFile = new  File(localPath);
     	if(imgFile.exists()){
-
 //    	    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 //    	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(myBitmap, 200, 300, true);
 //    	    Bitmap scaledBitmap = ImageProcess.getScaledImageFromBitmap(myBitmap, localPath);
