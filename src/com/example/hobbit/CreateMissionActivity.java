@@ -195,26 +195,32 @@ public class CreateMissionActivity extends Activity {
             DBCollection replyMissionCollection;
 
             BasicDBObject document = new BasicDBObject();
+            missionAndPhotoId = (ObjectId) document.get(Constants.MISSION_MONGO_DB_ID);
             document.put(Constants.USER_ID, mission.getUserId());
-            document.put(Constants.MISSON_TITLE, mission.getTitle());
-            document.put(Constants.MISSON_HINT, mission.getHint());
-            document.put(Constants.MISSON_COUNT_VIEW, 0);
-            document.put(Constants.MISSON_COUNT_TRY, 0);
-            document.put(Constants.MISSON_COUNT_SUCCESS, 0);
-            document.put(Constants.MISSON_COUNT_FAIL, 0);
+            document.put(Constants.MISSION_TITLE, mission.getTitle());
+            document.put(Constants.MISSION_HINT, mission.getHint());
+            document.put(Constants.MISSION_COUNT_VIEW, 0);
+            document.put(Constants.MISSION_COUNT_TRY, 0);
+            document.put(Constants.MISSION_COUNT_SUCCESS, 0);
+            document.put(Constants.MISSION_COUNT_FAIL, 0);
             double[] loc = {mission.getLatitude(), mission.getLongitude()};
-            document.put(Constants.MISSON_LOC, loc);
+            document.put(Constants.MISSION_LOC, loc);
             if (hasParentMission) {
-            	document.put(Constants.MISSON_PARENT_MISSION_ID, parentMission.getMissionId());
-            	document.put(Constants.MISSON_PARENT_USER_ID, parentMission.getUserId());
+            	document.put(Constants.MISSION_PARENT_MISSION_ID, parentMission.getMissionId());
+            	document.put(Constants.MISSION_PARENT_USER_ID, parentMission.getUserId());
+            	document.put(Constants.MISSION_BOOLEAN_REPLY, Constants.MISSION_BOOLEAN_NONE);
             	replyMissionCollection = mongoDB.getCollection(Database.COLLECTION_MISSION_REPLY);
             	replyMissionCollection.insert(document);
+            	
+            	BasicDBObject compDocument = new BasicDBObject();
+            	compDocument.put(Constants.MISSION_PARENT_MISSION_ID, parentMission.getMissionId());
+            	compDocument.put(Constants.MISSION_MISSION_RESPONSE_ID, missionAndPhotoId);
+            	compDocument.put(Constants.MISSION_BOOLEAN_REPLY, Constants.MISSION_BOOLEAN_NONE);
             } else {
             	parentCollection.insert(document);
             }
 
             updateParentMissionToDB(parentCollection);
-            missionAndPhotoId = (ObjectId) document.get(Constants.MISSON_MONGO_DB_ID);
             mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
@@ -226,9 +232,9 @@ public class CreateMissionActivity extends Activity {
     	}
     	BasicDBObject newDocument =
     			new BasicDBObject().append("$inc",
-    			new BasicDBObject().append(Constants.MISSON_COUNT_TRY, 1));
+    			new BasicDBObject().append(Constants.MISSION_COUNT_TRY, 1));
 
-		collection.update(new BasicDBObject().append(Constants.MISSON_MONGO_DB_ID, parentMission.getMissionId()), newDocument);
+		collection.update(new BasicDBObject().append(Constants.MISSION_MONGO_DB_ID, parentMission.getMissionId()), newDocument);
 //    	collection.find( { Constants.MISSON_MONGO_DB_ID: parentMission.getMissionId()});
     }
 
@@ -239,8 +245,8 @@ public class CreateMissionActivity extends Activity {
         		return;
         	}
     	    BasicDBObject query = new BasicDBObject();
-    	    query.put(Constants.MISSON_MONGO_DB_ID, new ObjectId(missionId));
-    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSON_COUNT_TRY, Constants.ONE);
+    	    query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(missionId));
+    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSION_COUNT_TRY, Constants.ONE);
     	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
     	    parentCollection.update(query, intModifier);
         }

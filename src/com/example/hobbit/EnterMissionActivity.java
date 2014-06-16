@@ -65,21 +65,21 @@ public class EnterMissionActivity extends Activity {
     	String userId = "";
     	String missionId = "";
     	Double lng, lat;
-		if (obj.get(Constants.MISSON_TITLE) != null) {
-			title = obj.get(Constants.MISSON_TITLE).toString();
+		if (obj.get(Constants.MISSION_TITLE) != null) {
+			title = obj.get(Constants.MISSION_TITLE).toString();
 		}
-		if (obj.get(Constants.MISSON_HINT) != null) {
-			hint = obj.get(Constants.MISSON_HINT).toString();
+		if (obj.get(Constants.MISSION_HINT) != null) {
+			hint = obj.get(Constants.MISSION_HINT).toString();
 		}
 		if (obj.get(Constants.USER_ID) != null) {
 			userId = obj.get(Constants.USER_ID).toString();
 		}
 
-		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSON_LOC);
+		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSION_LOC);
 		lng = (Double) loc.get(0);
 		lat = (Double) loc.get(1);
 
-		missionId = obj.get(Constants.MISSON_MONGO_DB_ID).toString();
+		missionId = obj.get(Constants.MISSION_MONGO_DB_ID).toString();
 		UpdateMissionTask task = new UpdateMissionTask();
 		task.execute(missionId);
 
@@ -162,13 +162,13 @@ public class EnterMissionActivity extends Activity {
 
     private class UpdateMissionTask extends AsyncTask<String, Void, String> {
 
-    	private void updateParentMissionToDB(String missionId) {
+    	private void updateParentMissionView(String missionId) {
         	if (parentCollection == null) {
         		return;
         	}
     	    BasicDBObject query = new BasicDBObject();
-    	    query.put(Constants.MISSON_MONGO_DB_ID, new ObjectId(missionId));
-    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSON_COUNT_VIEW, Constants.ONE);
+    	    query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(missionId));
+    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSION_COUNT_VIEW, Constants.ONE);
     	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
     	    parentCollection.update(query, intModifier);
         }
@@ -176,7 +176,7 @@ public class EnterMissionActivity extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			Log.d(TAG, "Mission to be updated is " + params[0]);
-			updateParentMissionToDB(params[0]);
+			updateParentMissionView(params[0]);
 			return null;
 		}
 
@@ -245,13 +245,13 @@ public class EnterMissionActivity extends Activity {
 				rowTextView.setPadding(50, 100, 0, 0);
 
 				String title = "Title is empty";
-				if (obj.get(Constants.MISSON_TITLE) != null) {
-					title = obj.get(Constants.MISSON_TITLE).toString();
+				if (obj.get(Constants.MISSION_TITLE) != null) {
+					title = obj.get(Constants.MISSION_TITLE).toString();
 				}
 
-				title += "_" + obj.get(Constants.MISSON_MONGO_DB_ID).toString();
+				title += "_" + obj.get(Constants.MISSION_MONGO_DB_ID).toString();
 				rowImageView.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
-				showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSON_MONGO_DB_ID)));
+				showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSION_MONGO_DB_ID)));
 				rowTextView.setText(title);
 				rowTextView.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -272,14 +272,14 @@ public class EnterMissionActivity extends Activity {
         private void makeMissionMarkersInMap(GoogleMap map, List<BasicDBObject> missions) {
         	Log.d(TAG, "total mission is " + missions.size());
             for (BasicDBObject obj : missions) {
-                BasicDBList loc = (BasicDBList) obj.get(Constants.MISSON_LOC);
+                BasicDBList loc = (BasicDBList) obj.get(Constants.MISSION_LOC);
                 String lat = loc.get(0).toString();
                 String lng = loc.get(1).toString();
                 LatLng mark = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
                 map.addMarker(new MarkerOptions()
                         .position(mark)
-                        .title(obj.get(Constants.MISSON_TITLE).toString())
-                        .snippet(obj.get(Constants.MISSON_HINT).toString()));
+                        .title(obj.get(Constants.MISSION_TITLE).toString())
+                        .snippet(obj.get(Constants.MISSION_HINT).toString()));
             }
         }
     }

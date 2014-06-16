@@ -16,16 +16,21 @@ public class Constants {
     public static final String INTENT_EXTRA_PHOTO_BITMAP = "intent_extra_photo_bitmap";
     public static final String INTENT_EXTRA_PHOTO_ABS_PATH = "intent_extra_photo_abs_path";
 
-    public static final String MISSON_MONGO_DB_ID = "_id";
-    public static final String MISSON_TITLE = "title";
-    public static final String MISSON_HINT = "hint";
-    public static final String MISSON_LOC= "loc";
-    public static final String MISSON_COUNT_VIEW = "view";
-    public static final String MISSON_COUNT_TRY = "try";
-    public static final String MISSON_COUNT_SUCCESS = "success";
-    public static final String MISSON_COUNT_FAIL = "fail";
-    public static final String MISSON_PARENT_MISSION_ID = "parentMissionId";
-    public static final String MISSON_PARENT_USER_ID = "parentUserId";
+    public static final String MISSION_MONGO_DB_ID = "_id";
+    public static final String MISSION_TITLE = "title";
+    public static final String MISSION_HINT = "hint";
+    public static final String MISSION_LOC= "loc";
+    public static final String MISSION_COUNT_VIEW = "view";
+    public static final String MISSION_COUNT_TRY = "try";
+    public static final String MISSION_COUNT_SUCCESS = "success";
+    public static final String MISSION_COUNT_FAIL = "fail";
+    public static final String MISSION_PARENT_MISSION_ID = "parentMissionId";
+    public static final String MISSION_MISSION_RESPONSE_ID = "missionResponseId";
+    public static final String MISSION_PARENT_USER_ID = "parentUserId";
+    public static final String MISSION_BOOLEAN_REPLY = "reply";
+    public static final String MISSION_BOOLEAN_NONE = "-1";
+    public static final String MISSION_BOOLEAN_SUCCESS = "1";
+    public static final String MISSION_BOOLEAN_FAIL = "0";
 
     public static final String USER_ID = "userId";
     public static final String USER_LAST_NAME = "lastName";

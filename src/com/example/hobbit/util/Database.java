@@ -15,6 +15,7 @@ public class Database {
     public static final String COLLECTION_USER = "user";
     public static final String COLLECTION_PARENT_MISSION = "parent_mission";
     public static final String COLLECTION_MISSION_REPLY = "mission_reply";
+    public static final String COLLECTION_COMPARISION = "comparison";
     public static final String MONGODB_INCREMENT = "$inc";
     private final String URI = "mongodb://admin:admin@ds029640.mongolab.com:29640/hobbitdb";
     private final BasicDBObject LOC = new BasicDBObject("loc","2d");
@@ -57,7 +58,7 @@ public class Database {
     
     public static DBObject findDocumentById(DBCollection collection, String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put(Constants.MISSON_MONGO_DB_ID, new ObjectId(id));
+        query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(id));
         DBObject dbObj = collection.findOne(query);
         return dbObj;
     }
