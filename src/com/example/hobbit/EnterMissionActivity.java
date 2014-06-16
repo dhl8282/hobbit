@@ -234,7 +234,6 @@ public class EnterMissionActivity extends Activity {
         		return;
         	}
 
-//        	final TextView[] myTextViews = new TextView[missions.size()];
         	for (final BasicDBObject obj : missions) {
         	    final LinearLayout layout = new LinearLayout(mContext);
 				final TextView rowTextView = new TextView(mContext);
@@ -252,7 +251,6 @@ public class EnterMissionActivity extends Activity {
 
 				title += "_" + obj.get(Constants.MISSON_MONGO_DB_ID).toString();
 				rowImageView.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
-//				rowImageView.setImageURI(Uri.parse(Constants.makeThumnailUrl(obj.getString(Constants.MISSON_MONGO_DB_ID))));
 				showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSON_MONGO_DB_ID)));
 				rowTextView.setText(title);
 				rowTextView.setOnClickListener(new View.OnClickListener() {

@@ -74,12 +74,12 @@
 	        android:text="Succeed pics" />
 	
 	    <Button
-	        android:id="@+id/buttonLike"
+	        android:id="@+id/buttonMap"
 	        style="?android:attr/buttonStyleSmall"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@+id/buttonKeep"
-	        android:text="Like" />
+	        android:text="Map" />
 	
 	    <TextView
 	        android:id="@+id/textViewHint"
