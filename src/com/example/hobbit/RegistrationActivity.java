@@ -11,6 +11,7 @@ import com.example.hobbit.util.Database;
 import com.example.hobbit.util.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 
 public class RegistrationActivity extends BaseActivity {
 
@@ -23,39 +24,21 @@ public class RegistrationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loginToSystem();
-//        VerifyUserTask task = new VerifyUserTask();
-//        task.execute();
-//        CreateUserTask task = new CreateUserTask();
-//        task.execute();
-        goToMainMenu();
+        UserCheckTask task = new UserCheckTask();
+        task.execute();
+        showMissionList();
     }
 
     private void loginToSystem() {
         hobbitUser = (User) getIntent().getSerializableExtra(Constants.USER_OBJECT);
         Log.d(TAG, "Logged in successfully as " + hobbitUser.getFirstname());
-        String userId = hobbitUser.getUserId();
-        if (isNotRegistered(userId)) {
-            registerUser(userId);
-            AppPrefs appPrefs = new AppPrefs(getApplicationContext());
-            appPrefs.setUserId(userId);
-        }
-        login(userId);
+        AppPrefs appPrefs = new AppPrefs(getApplicationContext());
+        appPrefs.setUserId(hobbitUser.getUserId());
     }
 
-    private boolean isNotRegistered(String userId) {
-        // TODO : implement isNotRegistered
-        return true;
-    }
-
-    private void registerUser(String userId) {
-        // TODO : implement registerUser
-    }
-
-    private void login(String userId){
-        // TODO : implement login
-    }
-    private void goToMainMenu() {
-//        Intent intent = new Intent(this, MainMenuActivity.class);
+    private void showMissionList() {
+    	// TODO : rename EnterMissionActivity
+    	// TODO : delete MainMenuActivity
     	Intent intent = new Intent(this, EnterMissionActivity.class);
         if (hobbitUser != null) {
             intent.putExtra(Constants.USER_OBJECT, hobbitUser);
@@ -63,32 +46,51 @@ public class RegistrationActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private class VerifyUserTask extends AsyncTask<String, Void, String> {
-
+    private class UserCheckTask extends AsyncTask<String, Void, Integer> {
+    	private int isRegistered(String userId) {
+    		mongoDB = new Database();
+            if (mongoDB != null) {
+            	Log.d(TAG, "mongo db connected successfully");
+            	userCollection = mongoDB.getCollection(Database.COLLECTION_USER);
+	    		BasicDBObject query = new BasicDBObject();
+	    	    query.put(Constants.USER_ID, userId);
+	    	    DBCursor cursor = userCollection.find(query);
+	    	    return cursor.length();
+            }
+			return 0;
+    	}
+    	
         @Override
-        protected String doInBackground(String... params) {
-            String inputId = "";
-            String inputPwd = "";
-            verifyIdPwd(inputId, inputPwd);
-            return null;
+        protected Integer doInBackground(String... params) {
+        	if (hobbitUser != null) {
+        		return isRegistered(hobbitUser.getUserId());
+        	} else {
+        		Log.d(TAG, "User object is null");
+        	}
+        	return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-//          textView.setText(result);
+        protected void onPostExecute(Integer userTotalLoginCount) {
+        	if (userTotalLoginCount > 0) {
+        		UpdateUserTask task = new UpdateUserTask();
+        		task.execute();
+        	} else {
+        		CreateUserTask task = new CreateUserTask();
+                task.execute();
+        	}
         }
     }
 
-    private void verifyIdPwd(String inputId, String inputPwd) {
-        Database mongoDB = new Database();
-        if (mongoDB != null) {
-            DBCollection coll = mongoDB.getCollection(Database.COLLECTION_USER);
-            Log.d(TAG, "mongo db collection connected successfully");
-        }
+    private class UpdateUserTask extends AsyncTask<String, Void, String> {
+    	@Override
+		protected String doInBackground(String... params) {
+			incrementLoginCount(hobbitUser.getUserId());
+			return null;
+		}
     }
-
+    
     private class CreateUserTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... params) {
         	createUserToDB(hobbitUser);
@@ -96,14 +98,22 @@ public class RegistrationActivity extends BaseActivity {
         }
     }
 
+    private void incrementLoginCount(String userId) {
+    	if (mongoDB != null && userCollection != null) {
+    		BasicDBObject query = new BasicDBObject();
+    	    query.put(Constants.USER_ID, userId);
+    	    BasicDBObject incValue = new BasicDBObject(Constants.USER_TOTAL_LOGIN, Constants.ONE);
+    	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
+    	    userCollection.update(query, intModifier);
+    	    Log.d(TAG, "Increment total login count for user");
+    	}
+    }
+    
     private void createUserToDB(User user) {
-        mongoDB = new Database();
-        Log.d(TAG, "mongo db connected successfully");
         if (mongoDB != null && user != null) {
-            userCollection = mongoDB.getCollection(Database.COLLECTION_USER);
-
             BasicDBObject document = new BasicDBObject();
             document.put(Constants.USER_ID, user.getUserId());
+            document.put(Constants.USER_TOTAL_LOGIN, user.getTotalLogin());
             document.put(Constants.USER_LAST_NAME, user.getLastname());
             document.put(Constants.USER_FIRST_NAME, user.getFirstname());
             document.put(Constants.USER_EMAIL, user.getEmail());

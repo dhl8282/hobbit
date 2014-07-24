@@ -12,6 +12,7 @@ public class User implements Serializable{
     private String email = "";
     private String gender = "";
     private String userId = "";
+    private int totalLogin = 1;
 
     public User(String source, String id, String lastname, String firstname, String username) {
         super();
@@ -23,7 +24,15 @@ public class User implements Serializable{
         this.userId = source + id;
     }
 
-    public String getUserId() {
+    public int getTotalLogin() {
+		return totalLogin;
+	}
+
+	public void setTotalLogin(int totalLogin) {
+		this.totalLogin = totalLogin;
+	}
+
+	public String getUserId() {
         return userId;
     }
 
