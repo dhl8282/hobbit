@@ -57,7 +57,8 @@ public class StartActivity extends FragmentActivity {
 			public void onClick(View v) {
 				inputId = inputIdText.getText().toString();
 				inputPwd = inputPwdText.getText().toString();
-				Intent intent = new Intent(context, MainMenuActivity.class);
+//				Intent intent = new Intent(context, MainMenuActivity.class);
+				Intent intent = new Intent(context, EnterMissionActivity.class);
                 startActivity(intent);
 			}
 		});

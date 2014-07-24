@@ -24,40 +24,62 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-            android:name="com.example.hobbit.MainMenuActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.MainMenuActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.hobbit.RegistrationActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.RegistrationActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.hobbit.CreateMissionActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.CreateMissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.facebook.LoginActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-		<activity android:name="com.example.hobbit.EnterMissionActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.EnterMissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.hobbit.PrepareCreateMissionActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.PrepareCreateMissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.hobbit.S3UploaderActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.S3UploaderActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.example.hobbit.MissionActivity" 
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden" >
+        <activity
+            android:name="com.example.hobbit.MissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        
+        <activity
+            android:name="com.example.hobbit.ZoomImageActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.hobbit.MapActivity"
+			android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.hobbit.BaseActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api" />
@@ -67,6 +89,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

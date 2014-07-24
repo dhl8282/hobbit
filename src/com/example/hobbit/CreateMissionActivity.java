@@ -2,7 +2,6 @@ package com.example.hobbit;
 
 import org.bson.types.ObjectId;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
-public class CreateMissionActivity extends Activity {
+public class CreateMissionActivity extends BaseActivity {
 
     private static final String TAG = "hobbit" + CreateMissionActivity.class.getSimpleName();
     private GPSTracker gps;
@@ -65,8 +64,9 @@ public class CreateMissionActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainMenuActivity.class);
+//        startActivity(intent);
+        finish();
     }
 
     private void createMission() {
@@ -195,7 +195,6 @@ public class CreateMissionActivity extends Activity {
             DBCollection replyMissionCollection;
 
             BasicDBObject document = new BasicDBObject();
-            missionAndPhotoId = (ObjectId) document.get(Constants.MISSION_MONGO_DB_ID);
             document.put(Constants.USER_ID, mission.getUserId());
             document.put(Constants.MISSION_TITLE, mission.getTitle());
             document.put(Constants.MISSION_HINT, mission.getHint());
@@ -211,6 +210,7 @@ public class CreateMissionActivity extends Activity {
             	document.put(Constants.MISSION_BOOLEAN_REPLY, Constants.MISSION_BOOLEAN_NONE);
             	replyMissionCollection = mongoDB.getCollection(Database.COLLECTION_MISSION_REPLY);
             	replyMissionCollection.insert(document);
+            	missionAndPhotoId = (ObjectId) document.get(Constants.MISSION_MONGO_DB_ID);
             	
             	BasicDBObject compDocument = new BasicDBObject();
             	compDocument.put(Constants.MISSION_PARENT_MISSION_ID, parentMission.getMissionId());
@@ -220,7 +220,9 @@ public class CreateMissionActivity extends Activity {
             	parentCollection.insert(document);
             }
 
+            missionAndPhotoId = (ObjectId) document.get(Constants.MISSION_MONGO_DB_ID);
             updateParentMissionToDB(parentCollection);
+            
             mission.setMongoDBId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }

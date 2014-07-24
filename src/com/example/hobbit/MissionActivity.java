@@ -3,27 +3,18 @@ package com.example.hobbit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.GPSTracker;
 import com.example.hobbit.util.ImageProcess;
@@ -34,10 +25,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
 
-public class MissionActivity extends Activity {
+public class MissionActivity extends BaseActivity {
 
 	private static final String TAG = "hobbit" + MissionActivity.class.getSimpleName();
     private TextView missionTitle, hintContent;
@@ -45,16 +34,9 @@ public class MissionActivity extends Activity {
     private Button startMissionButton, mapButton;
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mission);
+        setContentView(R.layout.mission_detail_design);
 
         missionTitle = (TextView) findViewById(R.id.textViewMissionTitle);
         hintContent = (TextView) findViewById(R.id.textViewHintContent);
@@ -72,6 +54,19 @@ public class MissionActivity extends Activity {
         addMapButton(mission);
     }
 
+    private void addMissionImageZoom(final Bitmap bitmap) {
+    	final Intent intent = new Intent(this, ZoomImageActivity.class)
+    			.putExtra(Constants.INTENT_EXTRA_PHOTO_BITMAP, bitmap);
+    	
+    	missionImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				startActivity(intent);
+			}
+		});
+    }
+    
     private void addStartMissionButton(final Mission mission) {
     	startMissionButton = (Button) findViewById(R.id.buttonStart);
     	startMissionButton.setOnClickListener(new OnClickListener() {
@@ -86,6 +81,8 @@ public class MissionActivity extends Activity {
     }
     
     private void addMapButton(final Mission mission) {
+    	final Intent intent = new Intent(this, MapActivity.class)
+    			.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
     	mapButton = (Button) findViewById(R.id.buttonMap);
     	mapButton.setOnClickListener(new OnClickListener() {
 			
@@ -113,7 +110,10 @@ public class MissionActivity extends Activity {
     	File imgFile = new  File(localPath);
     	if(imgFile.exists()){
     	    Bitmap scaledBitmap = ImageProcess.getBitmapFromMemCache(localPath);
-    	    missionImage.setImageBitmap(scaledBitmap);
+    	    if (scaledBitmap != null) {
+    	    	missionImage.setImageBitmap(scaledBitmap);
+    	    	addMissionImageZoom(scaledBitmap);
+    	    }
     	}
     }
 
@@ -153,7 +153,10 @@ public class MissionActivity extends Activity {
         protected void onPostExecute(Bitmap result) {
         	if (result != null) {
         		Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
-        		bmImage.setImageBitmap(scaledBitmap);
+        		if (scaledBitmap != null) {
+        			bmImage.setImageBitmap(scaledBitmap);
+        			addMissionImageZoom(scaledBitmap);
+        		}
         	}
             dialog.dismiss();
         }

@@ -1,6 +1,5 @@
 package com.example.hobbit;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import com.example.hobbit.util.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends BaseActivity {
 
     private static final String TAG = "hobbit" + RegistrationActivity.class.getSimpleName();
     private User hobbitUser;
@@ -56,7 +55,8 @@ public class RegistrationActivity extends Activity {
         // TODO : implement login
     }
     private void goToMainMenu() {
-        Intent intent = new Intent(this, MainMenuActivity.class);
+//        Intent intent = new Intent(this, MainMenuActivity.class);
+    	Intent intent = new Intent(this, EnterMissionActivity.class);
         if (hobbitUser != null) {
             intent.putExtra(Constants.USER_OBJECT, hobbitUser);
         }

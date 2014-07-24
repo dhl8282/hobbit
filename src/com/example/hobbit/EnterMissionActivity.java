@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
-public class EnterMissionActivity extends Activity {
+public class EnterMissionActivity extends BaseActivity {
 
     private static final String TAG = "hobbit" + EnterMissionActivity.class.getSimpleName();
     private LinearLayout mainPageLinearLayout;

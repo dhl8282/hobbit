@@ -12,5 +12,8 @@
     <string name="loading">Loading…</string>
     <string name="title_activity_mission">MissionActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_zoom_image">ZoomImageActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
 
 </resources>
