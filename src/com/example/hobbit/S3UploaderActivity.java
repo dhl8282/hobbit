@@ -73,7 +73,7 @@ public class S3UploaderActivity extends Activity {
         String filePath = mission.getLocalPhotoPath();
         String id = mission.getMongoDBId();
         if (id.equals("")) {
-        	Log.e(TAG, "Mission id is null");
+            Log.e(TAG, "Mission id is null");
         }
         new S3PutObjectTask(filePath, id, mission).execute();
         new S3PutThumnailTask(filePath, id, mission).execute();
@@ -165,7 +165,7 @@ public class S3UploaderActivity extends Activity {
                 in = new FileInputStream(convertBitmapToFile(mId, mFilePath, Constants.IMAGE_QUALITY_FULL));
 //                in = new FileInputStream(mFilePath);
             } catch (FileNotFoundException e) {
-            	Log.e(TAG, "Failed while reading bytes from " + e.getMessage());
+                Log.e(TAG, "Failed while reading bytes from " + e.getMessage());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -179,7 +179,7 @@ public class S3UploaderActivity extends Activity {
             // Put the image data into S3.
             try {
 //              s3Client.createBucket(Constants.getPictureBucket());
-            	Log.d(TAG, "mission id is " + mId);
+                Log.d(TAG, "mission id is " + mId);
                 PutObjectRequest por = new PutObjectRequest(
                         Constants.PICTURE_BUCKET_ORIGINAL, mId,
                         in, metadata);
@@ -194,13 +194,13 @@ public class S3UploaderActivity extends Activity {
 //                result.setErrorMessage(exception.getMessage());
 //            }
             } catch (AmazonServiceException ase) {
-            	Log.e(TAG, "Error Message:    " + ase.getMessage());
-            	Log.e(TAG, "HTTP Status Code: " + ase.getStatusCode());
-            	Log.e(TAG, "AWS Error Code:   " + ase.getErrorCode());
-            	Log.e(TAG, "Error Type:       " + ase.getErrorType());
-            	Log.e(TAG, "Request ID:       " + ase.getRequestId());
+                Log.e(TAG, "Error Message:    " + ase.getMessage());
+                Log.e(TAG, "HTTP Status Code: " + ase.getStatusCode());
+                Log.e(TAG, "AWS Error Code:   " + ase.getErrorCode());
+                Log.e(TAG, "Error Type:       " + ase.getErrorType());
+                Log.e(TAG, "Request ID:       " + ase.getRequestId());
             } catch (AmazonClientException ace) {
-            	Log.e(TAG, "Error Message: " + ace.getMessage());
+                Log.e(TAG, "Error Message: " + ace.getMessage());
             }
             return result;
         }

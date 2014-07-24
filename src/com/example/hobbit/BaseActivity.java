@@ -9,9 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class BaseActivity extends Activity{
-	 
-	private static final String TAG = "hobbit" + BaseActivity.class.getSimpleName();
-	
+     
+    private static final String TAG = "hobbit" + BaseActivity.class.getSimpleName();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +29,10 @@ public class BaseActivity extends Activity{
         // Take appropriate action for each action item click
         switch (item.getItemId()) {
         case R.id.action_validate:
-        	callValidation();
-        	return true;
+            callValidation();
+            return true;
         case R.id.action_add_mission:
-        	addMission();
+            addMission();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -40,14 +40,14 @@ public class BaseActivity extends Activity{
     }
     
     private void addMission() {
-    	Log.d(TAG, "Add mission is caled");
-    	Intent intent = new Intent(this, PrepareCreateMissionActivity.class);
-    	startActivity(intent);
+        Log.d(TAG, "Add mission is caled");
+        Intent intent = new Intent(this, PrepareCreateMissionActivity.class);
+        startActivity(intent);
     }
     
     private void callValidation() {
-    	Log.d(TAG, "Validation is caled");
-    	Intent intent = new Intent();
-    	//startActivity(intet);
+        Log.d(TAG, "Validation is caled");
+        Intent intent = new Intent();
+        //startActivity(intet);
     }
 }

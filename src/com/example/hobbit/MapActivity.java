@@ -19,15 +19,15 @@ import android.view.MenuItem;
 
 public class MapActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		Mission mission = (Mission) intent.getParcelableExtra(Constants.INTENT_EXTRA_MISSION);
-		showInTheMap(mission);
-	}
-	
-	private void showInTheMap(Mission mission) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        Mission mission = (Mission) intent.getParcelableExtra(Constants.INTENT_EXTRA_MISSION);
+        showInTheMap(mission);
+    }
+    
+    private void showInTheMap(Mission mission) {
         setContentView(R.layout.map_fragment);
         GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
@@ -50,7 +50,7 @@ public class MapActivity extends Activity {
     }
     
     private void makeMissionMarkersInMap(GoogleMap map, Mission mission) {
-    	LatLng mark = new LatLng(mission.getLatitude(), mission.getLongitude());
+        LatLng mark = new LatLng(mission.getLatitude(), mission.getLongitude());
         map.addMarker(new MarkerOptions()
                 .position(mark)
                 .title(mission.getTitle())
@@ -59,7 +59,7 @@ public class MapActivity extends Activity {
     }
     
     private LatLng getCurrentLocation() {
-    	GPSTracker gps = new GPSTracker(this);
+        GPSTracker gps = new GPSTracker(this);
         double latitude = 0;
         double longitude = 0;
 

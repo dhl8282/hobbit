@@ -22,12 +22,12 @@ public class StartActivity extends FragmentActivity {
 
     private static final String TAG = "hobbit" + StartActivity.class.getSimpleName();
     private MainFragment mainFragment;
-	private Button startButton;
-	private EditText inputIdText;
-	private EditText inputPwdText;
-	private String inputId = "";
-	private String inputPwd = "";
-	final Context context = this;
+    private Button startButton;
+    private EditText inputIdText;
+    private EditText inputPwdText;
+    private String inputId = "";
+    private String inputPwd = "";
+    final Context context = this;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,21 +47,21 @@ public class StartActivity extends FragmentActivity {
     }
 
     private void addKeyListener() {
-    	inputIdText = (EditText) findViewById(R.id.inputId);
-    	inputPwdText = (EditText) findViewById(R.id.inputPwd);
-    	startButton = (Button) findViewById(R.id.startButton);
+        inputIdText = (EditText) findViewById(R.id.inputId);
+        inputPwdText = (EditText) findViewById(R.id.inputPwd);
+        startButton = (Button) findViewById(R.id.startButton);
 
-    	startButton.setOnClickListener(new OnClickListener() {
+        startButton.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				inputId = inputIdText.getText().toString();
-				inputPwd = inputPwdText.getText().toString();
-//				Intent intent = new Intent(context, MainMenuActivity.class);
-				Intent intent = new Intent(context, EnterMissionActivity.class);
+            @Override
+            public void onClick(View v) {
+                inputId = inputIdText.getText().toString();
+                inputPwd = inputPwdText.getText().toString();
+//                Intent intent = new Intent(context, MainMenuActivity.class);
+                Intent intent = new Intent(context, EnterMissionActivity.class);
                 startActivity(intent);
-			}
-		});
+            }
+        });
     }
 
     private void generateHashKeyForFB() {

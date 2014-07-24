@@ -96,31 +96,31 @@ public class Mission implements Serializable{
         this.latitude = latitude;
     }
 
-	public String getLocalPhotoPath() {
-		return localPhotoPath;
-	}
+    public String getLocalPhotoPath() {
+        return localPhotoPath;
+    }
 
-	public void setLocalPhotoPath(String localPhotoPath) {
-		this.localPhotoPath = localPhotoPath;
-	}
+    public void setLocalPhotoPath(String localPhotoPath) {
+        this.localPhotoPath = localPhotoPath;
+    }
 
-	public String getMongoDBId() {
-		return mongoDBId;
-	}
+    public String getMongoDBId() {
+        return mongoDBId;
+    }
 
-	public void setMongoDBId(String mongoDBId) {
-		this.mongoDBId = mongoDBId;
-	}
+    public void setMongoDBId(String mongoDBId) {
+        this.mongoDBId = mongoDBId;
+    }
 
-	public String getPhotoUrl() {
-		return photoUrl;
-	}
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
 
-	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
-	}
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
-	public String getThumnailUrl() {
+    public String getThumnailUrl() {
         return thumnailUrl;
     }
 
@@ -128,32 +128,32 @@ public class Mission implements Serializable{
         this.thumnailUrl = thumnailUrl;
     }
 
-	public String getMissionId() {
-		return missionId;
-	}
+    public String getMissionId() {
+        return missionId;
+    }
 
-	public void setMissionId(String missionId) {
-		this.missionId = missionId;
-	}
+    public void setMissionId(String missionId) {
+        this.missionId = missionId;
+    }
 
-	public String getParentUserId() {
-		return parentUserId;
-	}
+    public String getParentUserId() {
+        return parentUserId;
+    }
 
-	public void setParentUserId(String parentUserId) {
-		this.parentUserId = parentUserId;
-	}
+    public void setParentUserId(String parentUserId) {
+        this.parentUserId = parentUserId;
+    }
 
-	public String getParentMissionId() {
-		return parentMissionId;
-	}
+    public String getParentMissionId() {
+        return parentMissionId;
+    }
 
-	public void setParentMissionId(String parentMissionId) {
-		this.parentMissionId = parentMissionId;
-	}
+    public void setParentMissionId(String parentMissionId) {
+        this.parentMissionId = parentMissionId;
+    }
 
-	public void setParentInfo(Mission parentMission) {
-		setParentMissionId(parentMission.getMissionId());
-		setParentUserId(parentMission.getUserId());
-	}
+    public void setParentInfo(Mission parentMission) {
+        setParentMissionId(parentMission.getMissionId());
+        setParentUserId(parentMission.getUserId());
+    }
 }

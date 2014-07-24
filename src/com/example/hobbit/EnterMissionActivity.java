@@ -52,50 +52,50 @@ public class EnterMissionActivity extends BaseActivity {
     }
 
     private void startMissionActivity(BasicDBObject obj) {
-    	Mission mission = makeMissionFromDB(obj);
+        Mission mission = makeMissionFromDB(obj);
         Intent intent = new Intent(this, MissionActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
         startActivity(intent);
     }
 
     private Mission makeMissionFromDB(BasicDBObject obj) {
-    	String title = "";
-    	String hint = "";
-    	String userId = "";
-    	String missionId = "";
-    	Double lng, lat;
-		if (obj.get(Constants.MISSION_TITLE) != null) {
-			title = obj.get(Constants.MISSION_TITLE).toString();
-		}
-		if (obj.get(Constants.MISSION_HINT) != null) {
-			hint = obj.get(Constants.MISSION_HINT).toString();
-		}
-		if (obj.get(Constants.USER_ID) != null) {
-			userId = obj.get(Constants.USER_ID).toString();
-		}
+        String title = "";
+        String hint = "";
+        String userId = "";
+        String missionId = "";
+        Double lng, lat;
+        if (obj.get(Constants.MISSION_TITLE) != null) {
+            title = obj.get(Constants.MISSION_TITLE).toString();
+        }
+        if (obj.get(Constants.MISSION_HINT) != null) {
+            hint = obj.get(Constants.MISSION_HINT).toString();
+        }
+        if (obj.get(Constants.USER_ID) != null) {
+            userId = obj.get(Constants.USER_ID).toString();
+        }
 
-		BasicDBList loc = (BasicDBList)obj.get(Constants.MISSION_LOC);
-		lng = (Double) loc.get(0);
-		lat = (Double) loc.get(1);
+        BasicDBList loc = (BasicDBList)obj.get(Constants.MISSION_LOC);
+        lng = (Double) loc.get(0);
+        lat = (Double) loc.get(1);
 
-		missionId = obj.get(Constants.MISSION_MONGO_DB_ID).toString();
-		UpdateMissionTask task = new UpdateMissionTask();
-		task.execute(missionId);
+        missionId = obj.get(Constants.MISSION_MONGO_DB_ID).toString();
+        UpdateMissionTask task = new UpdateMissionTask();
+        task.execute(missionId);
 
-		Mission mission = new Mission(title, hint, lng, lat);
-		mission.setMissionId(missionId);
-		mission.setPhotoUrl(Constants.makeOriginalUrl(missionId));
-		mission.setThumnailUrl(Constants.makeThumnailUrl(missionId));
-		mission.setUserId(userId);
+        Mission mission = new Mission(title, hint, lng, lat);
+        mission.setMissionId(missionId);
+        mission.setPhotoUrl(Constants.makeOriginalUrl(missionId));
+        mission.setThumnailUrl(Constants.makeThumnailUrl(missionId));
+        mission.setUserId(userId);
 
-		return mission;
+        return mission;
     }
 
     private void showMissionsInList() {
-    	setContentView(R.layout.main_page);
-    	mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
-    	LatLng currentLocation = getCurrentLocation();
-    	GetMissionsTask task = new GetMissionsTask(this, currentLocation);
+        setContentView(R.layout.main_page);
+        mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
+        LatLng currentLocation = getCurrentLocation();
+        GetMissionsTask task = new GetMissionsTask(this, currentLocation);
         task.execute();
     }
 
@@ -124,7 +124,7 @@ public class EnterMissionActivity extends BaseActivity {
     }
 
     private LatLng getCurrentLocation() {
-    	GPSTracker gps = new GPSTracker(this);
+        GPSTracker gps = new GPSTracker(this);
         double latitude = 0;
         double longitude = 0;
 
@@ -161,29 +161,29 @@ public class EnterMissionActivity extends BaseActivity {
 
     private class UpdateMissionTask extends AsyncTask<String, Void, String> {
 
-    	private void updateParentMissionView(String missionId) {
-        	if (parentCollection == null) {
-        		return;
-        	}
-    	    BasicDBObject query = new BasicDBObject();
-    	    query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(missionId));
-    	    BasicDBObject incValue = new BasicDBObject(Constants.MISSION_COUNT_VIEW, Constants.ONE);
-    	    BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
-    	    parentCollection.update(query, intModifier);
+        private void updateParentMissionView(String missionId) {
+            if (parentCollection == null) {
+                return;
+            }
+            BasicDBObject query = new BasicDBObject();
+            query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(missionId));
+            BasicDBObject incValue = new BasicDBObject(Constants.MISSION_COUNT_VIEW, Constants.ONE);
+            BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);
+            parentCollection.update(query, intModifier);
         }
 
-		@Override
-		protected String doInBackground(String... params) {
-			Log.d(TAG, "Mission to be updated is " + params[0]);
-			updateParentMissionView(params[0]);
-			return null;
-		}
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "Mission to be updated is " + params[0]);
+            updateParentMissionView(params[0]);
+            return null;
+        }
 
-		@Override
-		protected void onPostExecute(String result) {
-			Log.d(TAG, "Parent mission view count is updated");
-			super.onPostExecute(result);
-		}
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d(TAG, "Parent mission view count is updated");
+            super.onPostExecute(result);
+        }
     }
 
     private class GetMissionsTask extends AsyncTask<String, Void, List<BasicDBObject>> {
@@ -193,8 +193,8 @@ public class EnterMissionActivity extends BaseActivity {
         ProgressDialog dialog;
 
         public GetMissionsTask(Context context, LatLng currentLoc) {
-        	mContext = context;
-        	mCurrentLoc = currentLoc;
+            mContext = context;
+            mCurrentLoc = currentLoc;
         }
 
         public GetMissionsTask(GoogleMap map, LatLng currentLoc) {
@@ -221,55 +221,55 @@ public class EnterMissionActivity extends BaseActivity {
                 Log.d(TAG, "No missions are found");
             }
             else {
-//            		makeMissionMarkersInMap(mMap, missions);
-            	makeMissionList(missions);
+//                    makeMissionMarkersInMap(mMap, missions);
+                makeMissionList(missions);
             }
             dialog.dismiss();
         }
 
         private void makeMissionList(List<BasicDBObject> missions) {
-        	if (missions.size() == 0) {
-        		Log.d(TAG, "No mission returned");
-        		return;
-        	}
+            if (missions.size() == 0) {
+                Log.d(TAG, "No mission returned");
+                return;
+            }
 
-        	for (final BasicDBObject obj : missions) {
-        	    final LinearLayout layout = new LinearLayout(mContext);
-				final TextView rowTextView = new TextView(mContext);
-				final ImageView rowImageView = new ImageView(mContext);
+            for (final BasicDBObject obj : missions) {
+                final LinearLayout layout = new LinearLayout(mContext);
+                final TextView rowTextView = new TextView(mContext);
+                final ImageView rowImageView = new ImageView(mContext);
 
-				layout.setBackgroundColor(Color.GREEN);
-				layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 300));
-				rowImageView.setLayoutParams(new LayoutParams(300, 300));
-				rowTextView.setPadding(50, 100, 0, 0);
+                layout.setBackgroundColor(Color.GREEN);
+                layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 300));
+                rowImageView.setLayoutParams(new LayoutParams(300, 300));
+                rowTextView.setPadding(50, 100, 0, 0);
 
-				String title = "Title is empty";
-				if (obj.get(Constants.MISSION_TITLE) != null) {
-					title = obj.get(Constants.MISSION_TITLE).toString();
-				}
+                String title = "Title is empty";
+                if (obj.get(Constants.MISSION_TITLE) != null) {
+                    title = obj.get(Constants.MISSION_TITLE).toString();
+                }
 
-				title += "_" + obj.get(Constants.MISSION_MONGO_DB_ID).toString();
-				rowImageView.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
-				showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSION_MONGO_DB_ID)));
-				rowTextView.setText(title);
-				rowTextView.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						startMissionActivity(obj);
-					}
-				});
+                title += "_" + obj.get(Constants.MISSION_MONGO_DB_ID).toString();
+                rowImageView.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
+                showPhotoFromUrl(rowImageView, Constants.makeThumnailUrl(obj.getString(Constants.MISSION_MONGO_DB_ID)));
+                rowTextView.setText(title);
+                rowTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+                        startMissionActivity(obj);
+                    }
+                });
 
-			    // add the textview to the linearlayout
-				layout.addView(rowImageView);
-				layout.addView(rowTextView);
-				mainPageLinearLayout.addView(layout);
+                // add the textview to the linearlayout
+                layout.addView(rowImageView);
+                layout.addView(rowTextView);
+                mainPageLinearLayout.addView(layout);
 
-			}
+            }
 
         }
 
         private void makeMissionMarkersInMap(GoogleMap map, List<BasicDBObject> missions) {
-        	Log.d(TAG, "total mission is " + missions.size());
+            Log.d(TAG, "total mission is " + missions.size());
             for (BasicDBObject obj : missions) {
                 BasicDBList loc = (BasicDBList) obj.get(Constants.MISSION_LOC);
                 String lat = loc.get(0).toString();
@@ -284,7 +284,7 @@ public class EnterMissionActivity extends BaseActivity {
     }
     
     private void showPhotoFromUrl(ImageView imageView, String url) {
-    	new DownloadImageTask(imageView).execute(url);
+        new DownloadImageTask(imageView).execute(url);
     }
     
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -308,10 +308,10 @@ public class EnterMissionActivity extends BaseActivity {
         }
 
         protected void onPostExecute(Bitmap result) {
-        	if (result != null) {
-        		Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
-        		bmImage.setImageBitmap(scaledBitmap);
-        	}
+            if (result != null) {
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
+                bmImage.setImageBitmap(scaledBitmap);
+            }
         }
     }
 }

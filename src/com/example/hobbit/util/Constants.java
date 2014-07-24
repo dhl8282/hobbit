@@ -55,7 +55,7 @@ public class Constants {
     public static final int IMAGE_QUALITY_THUMNAIL = 30;
 
     public static String makeOriginalUrl(String id) {
-    	return HTTP_AP_NOEA_1 + "/" + PICTURE_BUCKET_ORIGINAL + "/" + id;
+         return HTTP_AP_NOEA_1 + "/" + PICTURE_BUCKET_ORIGINAL + "/" + id;
     }
 
     public static String makeThumnailUrl(String id) {

@@ -25,14 +25,14 @@ public class User implements Serializable{
     }
 
     public int getTotalLogin() {
-		return totalLogin;
-	}
+        return totalLogin;
+    }
 
-	public void setTotalLogin(int totalLogin) {
-		this.totalLogin = totalLogin;
-	}
+    public void setTotalLogin(int totalLogin) {
+        this.totalLogin = totalLogin;
+    }
 
-	public String getUserId() {
+    public String getUserId() {
         return userId;
     }
 

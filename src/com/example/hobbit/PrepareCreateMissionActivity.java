@@ -40,8 +40,8 @@ public class PrepareCreateMissionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		if (getIntent().hasExtra(Constants.INTENT_EXTRA_MISSION)) {
-			parentMission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
+        if (getIntent().hasExtra(Constants.INTENT_EXTRA_MISSION)) {
+            parentMission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         }
 
         showOption();
@@ -57,7 +57,7 @@ public class PrepareCreateMissionActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
-                	dispatchTakePictureIntent();
+                    dispatchTakePictureIntent();
                 }
                 else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -109,43 +109,43 @@ public class PrepareCreateMissionActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-    	if (resultCode != RESULT_CANCELED) {
-	        if(requestCode==REQUEST_TAKE_PHOTO && resultCode==RESULT_OK) {
-	            // Rescan gallery to fetch newly added photo
-	        	Log.d(TAG, "Camera is going to be launched for taking photo");
-	            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-	                    Uri.parse(FILE_HEADER
-	                            + Environment.getExternalStorageDirectory())));
-	        } else if(requestCode==REQUEST_LOAD_PHOTO && resultCode==RESULT_OK && data!=null) {
-	        	Log.d(TAG, "Select photo from library");
-	        	Uri selectedImage = data.getData();
-	            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-	
-	            Cursor cursor = getContentResolver().query(selectedImage,
-	                    filePathColumn, null, null, null);
-	            cursor.moveToFirst();
-	
-	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-	            mPhotoAbsolutePath = cursor.getString(columnIndex);
-	            mPhotoUri = Uri.parse(FILE_HEADER + mPhotoAbsolutePath);
-	            cursor.close();
-	        }
-	
-	        Intent intent = new Intent(this, CreateMissionActivity.class);
-	        Bitmap bitmap = ImageProcess.getScaledImage(this, mPhotoUri, mPhotoAbsolutePath);
-	        ImageProcess.addBitmapToMemoryCache(mPhotoAbsolutePath, bitmap);
-	        // TODO : Change to Disk cache
-	        //DiskLruImageCache disk = new DiskLruImageCache(this);
-	        //disk.put(mPhotoAbsolutePath, bitmap);
-	        intent.putExtra(Constants.INTENT_EXTRA_PHOTO_ABS_PATH, mPhotoAbsolutePath);
-	        if(parentMission != null) {
-	        	Log.d(TAG, "Put parent mission in extra");
-	        	intent.putExtra(Constants.INTENT_EXTRA_PARENT_MISSION, parentMission);
-	        }
-	        startActivity(intent);
-	        super.onActivityResult(requestCode, resultCode, data);
-	    } else {
-	    	finish();
-	    }
+        if (resultCode != RESULT_CANCELED) {
+            if(requestCode==REQUEST_TAKE_PHOTO && resultCode==RESULT_OK) {
+                // Rescan gallery to fetch newly added photo
+                Log.d(TAG, "Camera is going to be launched for taking photo");
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        Uri.parse(FILE_HEADER
+                                + Environment.getExternalStorageDirectory())));
+            } else if(requestCode==REQUEST_LOAD_PHOTO && resultCode==RESULT_OK && data!=null) {
+                Log.d(TAG, "Select photo from library");
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+    
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+    
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                mPhotoAbsolutePath = cursor.getString(columnIndex);
+                mPhotoUri = Uri.parse(FILE_HEADER + mPhotoAbsolutePath);
+                cursor.close();
+            }
+    
+            Intent intent = new Intent(this, CreateMissionActivity.class);
+            Bitmap bitmap = ImageProcess.getScaledImage(this, mPhotoUri, mPhotoAbsolutePath);
+            ImageProcess.addBitmapToMemoryCache(mPhotoAbsolutePath, bitmap);
+            // TODO : Change to Disk cache
+            //DiskLruImageCache disk = new DiskLruImageCache(this);
+            //disk.put(mPhotoAbsolutePath, bitmap);
+            intent.putExtra(Constants.INTENT_EXTRA_PHOTO_ABS_PATH, mPhotoAbsolutePath);
+            if(parentMission != null) {
+                Log.d(TAG, "Put parent mission in extra");
+                intent.putExtra(Constants.INTENT_EXTRA_PARENT_MISSION, parentMission);
+            }
+            startActivity(intent);
+            super.onActivityResult(requestCode, resultCode, data);
+        } else {
+            finish();
+        }
     }
 }
