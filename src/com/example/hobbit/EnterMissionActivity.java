@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +15,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +42,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
-public class EnterMissionActivity extends BaseActivity {
+public class EnterMissionActivity extends FragmentActivity {
 
     private static final String TAG = "hobbit" + EnterMissionActivity.class.getSimpleName();
-    private LinearLayout mainPageLinearLayout;
+    private LinearLayout mainPageLinearLayout, linearLayout;
+    private ListView listView;
     private Database mongoDB = null;
     private DBCollection parentCollection = null;
 
@@ -48,7 +54,8 @@ public class EnterMissionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        showMap();
-        showMissionsInList();
+//        showMissionsInList();
+        setContentView(R.layout.activity_main);
     }
 
     private void startMissionActivity(BasicDBObject obj) {
@@ -92,11 +99,26 @@ public class EnterMissionActivity extends BaseActivity {
     }
 
     private void showMissionsInList() {
-        setContentView(R.layout.main_page);
-        mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
+//        setContentView(R.layout.main_page);
+//        setContentView(R.layout.activity_main);
+//        linearLayout = (LinearLayout) findViewById(R.id.viewpager_main);
+//        View listLayout = LayoutInflater.from(this).inflate(R.layout.fragment_mission_list, null);
+//        linearLayout.addView(listLayout);
+//        listView = (ListView) findViewById(R.id.listview_main_mission);
+//        listView.setVisibility(View.VISIBLE);
+//        View itemView = LayoutInflater.from(this).inflate(R.layout.cell_main_mission, null, false);
+//        listView.addView(itemView);
+//        mainPageLinearLayout = (LinearLayout) findViewById(R.id.mainPageLinearLayout);
         LatLng currentLocation = getCurrentLocation();
-        GetMissionsTask task = new GetMissionsTask(this, currentLocation);
-        task.execute();
+//        GetMissionsTask task = new GetMissionsTask(this, currentLocation);
+//        task.execute();
+//        String[] songsArray = new String[10];
+//        for(int i=0; i < songsArray.length; i++){
+//            songsArray[i] = "Song " + i;
+//        }
+//        
+//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, songsArray);
+//        listView.setAdapter(arrayAdapter);
     }
 
     private void showMap() {
@@ -262,7 +284,8 @@ public class EnterMissionActivity extends BaseActivity {
                 // add the textview to the linearlayout
                 layout.addView(rowImageView);
                 layout.addView(rowTextView);
-                mainPageLinearLayout.addView(layout);
+//                mainPageLinearLayout.addView(layout);
+                linearLayout.addView(layout);
 
             }
 

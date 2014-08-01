@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class BaseActivity extends Activity{
+public class BaseActivity extends Activity {
      
     private static final String TAG = "hobbit" + BaseActivity.class.getSimpleName();
     
@@ -47,7 +47,7 @@ public class BaseActivity extends Activity{
     
     private void callValidation() {
         Log.d(TAG, "Validation is caled");
-        Intent intent = new Intent();
-        //startActivity(intet);
+        Intent intent = new Intent(this, ValidateActivity.class);
+        startActivity(intent);
     }
 }

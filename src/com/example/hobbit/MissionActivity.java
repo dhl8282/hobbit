@@ -3,6 +3,8 @@ package com.example.hobbit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,10 +12,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.GPSTracker;
@@ -26,21 +29,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MissionActivity extends BaseActivity {
+public class MissionActivity extends Activity{
 
     private static final String TAG = "hobbit" + MissionActivity.class.getSimpleName();
     private TextView missionTitle, hintContent;
-    private ImageView missionImage;
-    private Button startMissionButton, mapButton;
+    private ImageView missionImage, startMissionButton, mapButton, backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mission_detail_design);
-
-        missionTitle = (TextView) findViewById(R.id.textViewMissionTitle);
-        hintContent = (TextView) findViewById(R.id.textViewHintContent);
-        missionImage = (ImageView) findViewById(R.id.imageViewMissionImage);
+        setContentView(R.layout.activity_mission_detail);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.mission_layout);
+        View itemView = LayoutInflater.from(this).inflate(R.layout.header_mission_detail, null, false);
+        layout.addView(itemView);
+        
+        missionTitle = (TextView) findViewById(R.id.textview_header_mission_detail_title);
+        hintContent = (TextView) findViewById(R.id.textview_header_mission_detail_hint);
+        missionImage = (ImageView) findViewById(R.id.imageview_header_mission_detail_image);
+        backButton = (ImageView) findViewById(R.id.button_mission_detail_back);
 
         Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         try {
@@ -52,6 +58,16 @@ public class MissionActivity extends BaseActivity {
 
         addStartMissionButton(mission);
         addMapButton(mission);
+        addBackButton();
+    }
+
+    private void addBackButton() {
+        backButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
     }
 
     private void addMissionImageZoom(final Bitmap bitmap) {
@@ -68,7 +84,7 @@ public class MissionActivity extends BaseActivity {
     }
     
     private void addStartMissionButton(final Mission mission) {
-        startMissionButton = (Button) findViewById(R.id.buttonStart);
+        startMissionButton = (ImageView) findViewById(R.id.button_mission_detail_start);
         startMissionButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -83,7 +99,7 @@ public class MissionActivity extends BaseActivity {
     private void addMapButton(final Mission mission) {
         final Intent intent = new Intent(this, MapActivity.class)
                 .putExtra(Constants.INTENT_EXTRA_MISSION, mission);
-        mapButton = (Button) findViewById(R.id.buttonMap);
+        mapButton = (ImageView) findViewById(R.id.button_header_mission_detail_share);
         mapButton.setOnClickListener(new OnClickListener() {
             
             @Override

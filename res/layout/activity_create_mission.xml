@@ -1,0 +1,171 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="kr.ac.snu.ux.pics.CreateMissionActivity">
+    
+    <RelativeLayout
+        android:id="@+id/layout_create_mission_menubar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/actionbar_bg">
+        
+        <ImageView
+            android:id="@+id/button_create_mission_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/exit_icon"/>
+        
+        <ImageView 
+            android:id="@+id/button_create_mission_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/check_icon"/>
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/layout_create_mission_locationbar" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#f3f3f3"
+        android:orientation="vertical">
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#c7c6c6"/>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+	            
+	        <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/location_bar_icon"/>
+	        
+	        <TextView
+	            android:id="@+id/textview_create_mission_location"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Yellowknife, Canada"
+	            android:textColor="#444444" />
+	        
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_create_mission_menubar"
+        android:layout_above="@id/layout_create_mission_locationbar">
+	        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp"
+	        android:orientation="vertical">
+		
+		    <EditText
+		        android:id="@+id/edittext_create_mission_title"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:background="#ffffff"
+		        android:ellipsize="end"
+		        android:hint="Write the title of your quest..."
+		        android:imeOptions="actionNext"
+		        android:lines="1"
+		        android:padding="5dp"
+		        android:scrollHorizontally="true"
+		        android:singleLine="true" />
+		    
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px"
+		        android:layout_marginBottom="5dp"
+		        android:background="#c7c6c6" />
+		    
+		    <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+	
+		        <ImageView
+		            android:id="@+id/imageview_create_mission_thumbnail"
+		            android:layout_width="100dp"
+		            android:layout_height="100dp"
+		            android:layout_alignParentRight="true"
+		            android:layout_alignParentTop="true"
+		            android:layout_marginRight="10dp"
+		            android:layout_marginTop="10dp"
+		            android:background="#e5e5e5"
+		            android:scaleType="fitCenter" />
+		        
+		        <ImageView
+		            android:id="@+id/button_create_mission_thumb_exit"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_alignParentTop="true"
+		            android:src="@drawable/thumb_exit" />
+		        
+			    <EditText
+			        android:id="@+id/edittext_create_mission_hint"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="10dp"
+			        android:layout_toLeftOf="@id/imageview_create_mission_thumbnail"
+			        android:background="#ffffff"
+			        android:hint="Write the hint..."
+			        android:padding="5dp" />
+			    
+		    </RelativeLayout>
+		    
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginBottom="2dp"
+		        android:background="#c7c6c6" />
+		    
+		    <LinearLayout
+		        android:id="@+id/layout_create_mission_tags"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_vertical"
+		        android:padding="3dp"
+		        android:orientation="horizontal">
+		        
+		        <ImageView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginRight="5dp"
+		            android:src="@drawable/tag_add_icon" />
+		        
+		        <TextView
+		            android:id="@+id/textview_create_mission_tag_placeholder"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="Add some tags..."
+		            android:textColor="#444444"
+		            android:textSize="16sp" />
+		        
+		    </LinearLayout>
+		    
+	    </LinearLayout>
+	    
+    </ScrollView>
+    
+</RelativeLayout>

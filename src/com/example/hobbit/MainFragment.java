@@ -44,7 +44,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_start, container, false);
+        View view = inflater.inflate(R.layout.activity_login, container, false);
 
         LoginButton authButton = (LoginButton) view.findViewById(R.id.login_button);
         authButton.setFragment(this);

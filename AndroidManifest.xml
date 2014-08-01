@@ -16,18 +16,13 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light" >
+        android:theme="@android:style/Theme.NoTitleBar">
         <activity android:name="com.example.hobbit.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.hobbit.MainMenuActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.hobbit.RegistrationActivity"
@@ -71,13 +66,18 @@
         </activity>
         <activity
             android:name="com.example.hobbit.MapActivity"
-			android:configChanges="orientation|keyboardHidden"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.hobbit.BaseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.hobbit.ValidateActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape" >
         </activity>
 
         <meta-data
@@ -89,8 +89,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-    </application>
+	</application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

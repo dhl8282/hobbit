@@ -2,6 +2,7 @@ package com.example.hobbit;
 
 import org.bson.types.ObjectId;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,13 +31,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
-public class CreateMissionActivity extends BaseActivity {
+public class CreateMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + CreateMissionActivity.class.getSimpleName();
     private GPSTracker gps;
-    private ImageView imageViewPicPreview;
+    private ImageView imageViewPicPreview, buttonSubmit;
     private EditText editTextMissionTitle, editTextHint;
-    private Button buttonTouchMe;
     private String missionTitle, hint;
     private double longitude, latitude;
     private GoogleMap map;
@@ -53,7 +52,7 @@ public class CreateMissionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.picture_preview);
+        setContentView(R.layout.activity_create_mission);
         if (getIntent().hasExtra(Constants.INTENT_EXTRA_PARENT_MISSION)) {
             parentMission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_PARENT_MISSION);
             hasParentMission = true;
@@ -64,16 +63,14 @@ public class CreateMissionActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent intent = new Intent(this, MainMenuActivity.class);
-//        startActivity(intent);
         finish();
     }
 
     private void createMission() {
-        imageViewPicPreview = (ImageView) findViewById(R.id.imageViewPicPreview);
-        editTextMissionTitle = (EditText) findViewById(R.id.editTextMissionTitle);
-        editTextHint = (EditText) findViewById(R.id.editTextHint);
-        buttonTouchMe = (Button) findViewById(R.id.buttonTouchMe);
+        imageViewPicPreview = (ImageView) findViewById(R.id.imageview_create_mission_thumbnail);
+        editTextMissionTitle = (EditText) findViewById(R.id.edittext_create_mission_title);
+        editTextHint = (EditText) findViewById(R.id.edittext_create_mission_hint);
+        buttonSubmit = (ImageView) findViewById(R.id.button_create_mission_submit);
         Intent intent = getIntent();
         mPhotoAbsolutePath = (String) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_ABS_PATH);
         photoBitmap = ImageProcess.getBitmapFromMemCache(mPhotoAbsolutePath);
@@ -85,7 +82,7 @@ public class CreateMissionActivity extends BaseActivity {
             editTextMissionTitle.setText("Re :" + parentMission.getTitle());
         }
 
-        buttonTouchMe.setOnClickListener(new OnClickListener() {
+        buttonSubmit.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {

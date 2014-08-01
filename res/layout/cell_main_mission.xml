@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_list_cell_selector"
+    android:paddingBottom="12dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="12dp" >
+    
+    <ImageView
+        android:id="@+id/imageview_cell_main_mission_thumbnail"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher"
+        />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/imageview_cell_main_mission_thumbnail"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/textview_cell_main_mission_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gangnam Style"
+            android:textColor="#454545"
+            android:textSize="18sp" />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/list_location_icon"/>
+            
+	        <TextView
+	            android:id="@+id/textview_cell_main_mission_location"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Yellowknife, Canada"
+	            android:textColor="#1b1b1b"
+	            android:textSize="10sp"
+	            android:textStyle="bold" />
+       	    
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/textview_cell_main_mission_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="by iamochanghoon"
+            android:textColor="#bbbab8"
+            android:textSize="12sp" />
+        
+        <LinearLayout
+            android:id="@+id/layout_cell_main_mission_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/entertainicon"/>
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/entertainicon"/>
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="-2dp"
+            android:gravity="top"
+            android:orientation="horizontal" >
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/likeicon"/>
+            
+            <TextView
+                android:id="@+id/textview_cell_main_mission_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1526"
+                android:textColor="#454545" />
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/staricon"/>
+            
+            <TextView
+                android:id="@+id/textview_cell_main_mission_star_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.5"
+                android:textColor="#454545" />
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/replyicon"/>
+            
+            <TextView
+                android:id="@+id/textview_cell_main_mission_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="321"
+                android:textColor="#454545" />
+            
+        </LinearLayout>
+       
+    </LinearLayout>
+
+</RelativeLayout>

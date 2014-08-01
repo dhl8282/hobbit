@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kr.ac.snu.ux.pics.PhotoDetailActivity"
+    android:background="#000" >
+
+    <Button
+        android:id="@+id/button_photodetail_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="X"/>
+    
+    <ImageView
+        android:id="@+id/imageview_photodetail_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:src="@drawable/dummyphoto" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="80dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:orientation="vertical"
+        android:background="@drawable/photodetail_description_selector">
+        
+        <TextView 
+            android:id="@+id/textview_photodetail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:text="Reason why you can't wake up"/>
+        
+        <TextView
+            android:id="@+id/textview_photodetail_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:textColor="#aaa"
+            android:text="Use your fingers to push friend's head. It must be fun! XD"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#aaa"/>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="vertical">
+                
+                <TextView
+                    android:id="@+id/textview_photodetail_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ccc"
+                    android:text="by na0000yi"/>
+                
+                <TextView
+                    android:id="@+id/textview_photodetail_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#aaa"
+                    android:text="2014.02.18 WED AM 07:48"/>
+                
+            </LinearLayout>
+            
+            <ImageView
+                android:id="@+id/imageview_photodetail_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"/>
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+        
+    
+</RelativeLayout>

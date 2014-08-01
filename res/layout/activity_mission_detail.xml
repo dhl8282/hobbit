@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+	
+    <RelativeLayout
+        android:id="@+id/layout_mission_detail_menubar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/actionbar_bg" >
+    
+	    <ImageView
+	        android:id="@+id/button_mission_detail_start"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="5dp"
+	        android:src="@drawable/start_icon" />
+	    
+	    <ImageView
+	        android:id="@+id/button_mission_detail_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dp"
+	        android:src="@drawable/back_icon" />
+	    
+	    <ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@id/button_mission_detail_back"
+	        android:src="@drawable/actionbar_logo" />
+	        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layout_mission_detail_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#fbd028"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <EditText
+            android:id="@+id/edittext_mission_detail_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="60dp"
+            android:background="#fff"
+            android:ems="10"
+            android:hint="Write a comment..."
+            android:maxLines="3"
+            android:minHeight="40dp"
+            android:padding="5dp"
+            android:textSize="16sp" />
+	    
+        <ImageView
+            android:id="@+id/imageview_mission_detail_comment_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/edittext_mission_detail_comment"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_launcher" />
+        
+        <Button
+            android:id="@+id/button_mission_detail_comment_post"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/edittext_mission_detail_comment"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="false"
+            android:background="#fbd028"
+            android:text="Post"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+        
+    </RelativeLayout>
+
+    <ListView 
+        android:id="@+id/listview_mission_detail_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listview_mission_detail_comment"
+        android:layout_above="@id/layout_mission_detail_comment"
+        android:background="#fff"
+        android:divider="#aaa"
+        android:dividerHeight="1dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/mission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_mission_detail_menubar"
+        android:layout_above="@id/listview_mission_detail_comment"
+        android:orientation="vertical" >
+    </LinearLayout>
+    
+</RelativeLayout>

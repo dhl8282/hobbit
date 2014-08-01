@@ -28,8 +28,6 @@ public class Database {
         try {
             client = new MongoClient(mongo_client_uri);
             db = client.getDB(mongo_client_uri.getDatabase());
-
-//            getCollection(COLLECTION_PARENT_MISSION).ensureIndex(LOC);
         } catch (UnknownHostException e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }

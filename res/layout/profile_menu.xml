@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/profile_bg" >
+	
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#a9a9aa"/>
+        
+        <Button 
+            android:id="@+id/button_menu_quests_created"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Quests created by me"/>
+        
+        <Button
+            android:id="@+id/button_menu_quests_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Quests done by me"/>
+        
+        <Button
+            android:id="@+id/button_menu_quests_kept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Quests kept by me"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#a9a9aa"/>
+        
+        <Button
+            android:id="@+id/button_menu_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="My Friends"/>
+        
+        <Button
+            android:id="@+id/button_menu_add_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Add Friends"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#a9a9aa"/>
+        
+        <Button
+            android:id="@+id/button_menu_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Account"/>
+        
+        <Button
+            android:id="@+id/button_menu_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:background="@drawable/profile_menu_button_selector"
+            android:textColor="#58595b"
+            android:text="Settings"/>
+        
+    </LinearLayout>
+
+</RelativeLayout>

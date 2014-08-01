@@ -1,5 +1,6 @@
 package com.example.hobbit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
-public class RegistrationActivity extends BaseActivity {
+public class RegistrationActivity extends Activity {
 
     private static final String TAG = "hobbit" + RegistrationActivity.class.getSimpleName();
     private User hobbitUser;

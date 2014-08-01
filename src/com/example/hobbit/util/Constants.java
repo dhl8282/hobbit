@@ -4,8 +4,8 @@ public class Constants {
     public static final String PICTURE_DIR = "/Pictures/";
     public static final String HOBBIT_DIR = "/Hobbit/";
     public static final String HTTP_AP_NOEA_1 = "https://s3-ap-northeast-1.amazonaws.com";
-    public static final String AWS_ACCESS_KEY_ID = "AKIAJN3LZWGJGDHCWFCA";
-    public static final String AWS_SECRET_KEY = "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";
+    public static final String AWS_ACCESS_KEY_ID = "AKIAJHBW5MRNTHNDACHQ";
+    public static final String AWS_SECRET_KEY = "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";
 
     public static final String PICTURE_BUCKET_ORIGINAL = "bucket-for-hobbit-original";
     public static final String PICTURE_BUCKET_THUMNAIL = "bucket-for-hobbit-thumnail";
@@ -43,11 +43,14 @@ public class Constants {
     public static final String USER_SUCCEED_MISSIONS = "succeedMissions";
     public static final String USER_FAILED_MISSIONS = "failedMissions";
     public static final String USER_TOTAL_LOGIN = "totalLogin";
+    public static final String USER_SUCCESS = "success";
+    public static final String USER_FAIL = "fail";
 
     public static final String FACEBOOK = "facebook";
     public static final String USER_OBJECT = "user_object";
 
     public static final int ONE = 1;
+    public static final int DEFAULT_VALIDATION_COUNT = 10;
     public static final int DEFAULT_MISSION_NUMBER = 10;
     public static final int DEFAULT_PICTURE_LENGTH = 400;
     public static final int DEFAULT_PICTURE_QUALITY = 30;

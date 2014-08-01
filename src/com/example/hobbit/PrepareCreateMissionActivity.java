@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +21,7 @@ import com.example.hobbit.util.Constants;
 import com.example.hobbit.util.ImageProcess;
 import com.example.hobbit.util.Mission;
 
-public class PrepareCreateMissionActivity extends BaseActivity {
+public class PrepareCreateMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + PrepareCreateMissionActivity.class.getSimpleName();
     static final int REQUEST_TAKE_PHOTO = 1;

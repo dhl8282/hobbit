@@ -42,27 +42,26 @@ public class StartActivity extends FragmentActivity {
             mainFragment = (MainFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
-        setContentView(R.layout.activity_start);
-        addKeyListener();
+        setContentView(R.layout.activity_login);
+        //addKeyListener();
     }
 
-    private void addKeyListener() {
-        inputIdText = (EditText) findViewById(R.id.inputId);
-        inputPwdText = (EditText) findViewById(R.id.inputPwd);
-        startButton = (Button) findViewById(R.id.startButton);
-
-        startButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                inputId = inputIdText.getText().toString();
-                inputPwd = inputPwdText.getText().toString();
-//                Intent intent = new Intent(context, MainMenuActivity.class);
-                Intent intent = new Intent(context, EnterMissionActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void addKeyListener() {
+//        inputIdText = (EditText) findViewById(R.id.inputId);
+//        inputPwdText = (EditText) findViewById(R.id.inputPwd);
+//        startButton = (Button) findViewById(R.id.startButton);
+//
+//        startButton.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                inputId = inputIdText.getText().toString();
+//                inputPwd = inputPwdText.getText().toString();
+//                Intent intent = new Intent(context, EnterMissionActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     private void generateHashKeyForFB() {
         try {
