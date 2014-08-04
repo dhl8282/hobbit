@@ -109,7 +109,7 @@
 	    <fragment
 			tools:context=".ListActivity"
 			android:id="@+id/itemListFragment"
-			android:name="com.example.hobbit.listitemview.ItemListFragment"
+			android:name="com.example.hobbit.MissionListFragment"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" />
 	</LinearLayout>
