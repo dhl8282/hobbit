@@ -1,18 +1,62 @@
-package com.example.hobbit;
+package com.example.pics;
 
+import com.example.hobbit.R;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
-public class EnterMissionActivity extends FragmentActivity {
+public class MainPageActivity extends FragmentActivity {
 
-    private static final String TAG = "hobbit" + EnterMissionActivity.class.getSimpleName();
+    private static final String TAG = "hobbit" + MainPageActivity.class.getSimpleName();
+    private ImageView mainMenu, mainValidate, mainCreate;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        addButtons();
     }
-
+    
+    private void addButtons() {
+        addMainMenu();
+        addMainCreate();
+        addMainValidate();
+    }
+    
+    private void addMainMenu() {
+        mainMenu = (ImageView) findViewById(R.id.button_main_menu);
+    }
+    
+    private void addMainValidate() {
+        mainValidate = (ImageView) findViewById(R.id.button_main_validate);
+        mainValidate.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                final Intent intent = new Intent(getApplicationContext(), PrepareValidationActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    
+    private void addMainCreate(){
+        mainCreate = (ImageView) findViewById(R.id.button_main_create);
+        mainCreate.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                final Intent intent = new Intent(getApplicationContext(), PrepareCreateMissionActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    
+    
+    
 //    private LatLng getCurrentLocation() {
 //        GPSTracker gps = new GPSTracker(this);
 //        double latitude = 0;

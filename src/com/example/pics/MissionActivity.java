@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +18,13 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.GPSTracker;
-import com.example.hobbit.util.ImageProcess;
-import com.example.hobbit.util.Mission;
+
+import com.example.hobbit.R;
+import com.example.pics.util.AppPrefs;
+import com.example.pics.util.Constants;
+import com.example.pics.util.GPSTracker;
+import com.example.pics.util.ImageProcess;
+import com.example.pics.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -32,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MissionActivity extends Activity{
 
     private static final String TAG = "hobbit" + MissionActivity.class.getSimpleName();
-    private TextView missionTitle, hintContent;
+    private TextView missionTitle, hintContent, createdDate, userName;
     private ImageView missionImage, startMissionButton, mapButton, backButton;
 
     @Override
@@ -45,6 +48,8 @@ public class MissionActivity extends Activity{
         
         missionTitle = (TextView) findViewById(R.id.textview_header_mission_detail_title);
         hintContent = (TextView) findViewById(R.id.textview_header_mission_detail_hint);
+        createdDate = (TextView) findViewById(R.id.textview_header_mission_detail_created_time);
+        userName = (TextView) findViewById(R.id.textview_header_mission_detail_creator_name);
         missionImage = (ImageView) findViewById(R.id.imageview_header_mission_detail_image);
         backButton = (ImageView) findViewById(R.id.button_mission_detail_back);
 
@@ -113,6 +118,8 @@ public class MissionActivity extends Activity{
         if (mission != null) {
             missionTitle.setText(mission.getTitle());
             hintContent.setText(mission.getHint());
+            createdDate.setText(mission.getDate().toString());
+            userName.setText("by " + new AppPrefs(getApplicationContext()).getUserName());
 
             if (!mission.getLocalPhotoPath().isEmpty()) {
                 showPhotoFromLocal(mission.getLocalPhotoPath());
@@ -171,7 +178,7 @@ public class MissionActivity extends Activity{
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(result, 200, 300, true);
                 if (scaledBitmap != null) {
                     bmImage.setImageBitmap(scaledBitmap);
-                    addMissionImageZoom(scaledBitmap);
+                    addMissionImageZoom(result);
                 }
             }
             dialog.dismiss();

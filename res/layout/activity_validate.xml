@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="kr.ac.snu.ux.pics.ValidateActivity" >
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         android:id="@+id/layout_validate_menubar"
@@ -109,23 +108,23 @@
                 <ImageView
                     android:id="@+id/imageview_validate_above"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:background="#454545"
                     android:cropToPadding="true"
                     android:padding="3dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dummyphoto" />
+                    android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
                 
                 <ImageView
                     android:id="@+id/imageview_validate_below"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:layout_marginTop="10dp"
                     android:background="#454545"
                     android:cropToPadding="true"
                     android:padding="3dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dummyphoto" />
+                    android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
                 
             </LinearLayout>
             

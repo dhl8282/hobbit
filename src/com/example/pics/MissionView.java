@@ -1,9 +1,9 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import java.io.InputStream;
 
 import com.example.hobbit.R;
-import com.example.hobbit.util.Mission;
+import com.example.pics.util.Mission;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,8 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MissionView extends RelativeLayout {
-    private TextView mTitleTextView;
-    private TextView mDescriptionTextView;
+    private TextView mTitleTextView, mDescriptionTextView;
     private ImageView mImageView;
 
     public static MissionView inflate(ViewGroup parent) {

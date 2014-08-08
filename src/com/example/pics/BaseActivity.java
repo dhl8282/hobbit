@@ -1,4 +1,6 @@
-package com.example.hobbit;
+package com.example.pics;
+
+import com.example.hobbit.R;
 
 import android.app.Activity;
 import android.content.Intent;

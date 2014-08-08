@@ -1,4 +1,4 @@
-package com.example.hobbit.util;
+package com.example.pics.util;
 
 import java.net.UnknownHostException;
 

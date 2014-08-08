@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.ImageProcess;
-import com.example.hobbit.util.Mission;
+import com.example.pics.util.Constants;
+import com.example.pics.util.ImageProcess;
+import com.example.pics.util.Mission;
 
 public class PrepareCreateMissionActivity extends Activity {
 
@@ -53,6 +53,7 @@ public class PrepareCreateMissionActivity extends Activity {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -144,6 +145,7 @@ public class PrepareCreateMissionActivity extends Activity {
                 intent.putExtra(Constants.INTENT_EXTRA_PARENT_MISSION, parentMission);
             }
             startActivity(intent);
+            finish();
             super.onActivityResult(requestCode, resultCode, data);
         } else {
             finish();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.hobbit.util;
+package com.example.pics.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;

@@ -1,8 +1,9 @@
-package com.example.hobbit;
+package com.example.pics;
 
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.GPSTracker;
-import com.example.hobbit.util.Mission;
+import com.example.hobbit.R;
+import com.example.pics.util.Constants;
+import com.example.pics.util.GPSTracker;
+import com.example.pics.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;

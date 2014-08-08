@@ -1,11 +1,11 @@
-package com.example.hobbit.util;
+package com.example.pics.util;
 
 public class Constants {
     public static final String PICTURE_DIR = "/Pictures/";
     public static final String HOBBIT_DIR = "/Hobbit/";
     public static final String HTTP_AP_NOEA_1 = "https://s3-ap-northeast-1.amazonaws.com";
-    public static final String AWS_ACCESS_KEY_ID = "";
-    public static final String AWS_SECRET_KEY = "";
+    public static final String AWS_ACCESS_KEY_ID = "AKIAIGZDKFA4PO4VYRBA";
+    public static final String AWS_SECRET_KEY = "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";
 
     public static final String PICTURE_BUCKET_ORIGINAL = "bucket-for-hobbit-original";
     public static final String PICTURE_BUCKET_THUMNAIL = "bucket-for-hobbit-thumnail";
@@ -19,6 +19,7 @@ public class Constants {
     public static final String MISSION_MONGO_DB_ID = "_id";
     public static final String MISSION_TITLE = "title";
     public static final String MISSION_HINT = "hint";
+    public static final String MISSION_DATE = "date";
     public static final String MISSION_LOC= "loc";
     public static final String MISSION_COUNT_VIEW = "view";
     public static final String MISSION_COUNT_TRY = "try";
@@ -31,6 +32,8 @@ public class Constants {
     public static final String MISSION_BOOLEAN_NONE = "-1";
     public static final String MISSION_BOOLEAN_SUCCESS = "1";
     public static final String MISSION_BOOLEAN_FAIL = "0";
+    public static final String MISSION_VALIDATION_REPLY_LIST = "validationReplyList";
+    public static final String MISSION_VALIDATION_PARENT_LIST = "validationParentList";
 
     public static final String USER_ID = "userId";
     public static final String USER_LAST_NAME = "lastName";

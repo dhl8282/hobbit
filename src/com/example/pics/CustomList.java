@@ -1,3 +1,4 @@
+package com.example.pics;
 //package com.example.hobbit;
 //
 //import android.app.Activity;

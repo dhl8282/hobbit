@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.example.hobbit.util.Constants;
+import com.example.hobbit.R;
+import com.example.pics.util.Constants;
 
 public class ZoomImageActivity extends Activity {
 

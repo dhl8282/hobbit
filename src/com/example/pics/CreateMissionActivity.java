@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import org.bson.types.ObjectId;
 
@@ -15,12 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.hobbit.util.AppPrefs;
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.Database;
-import com.example.hobbit.util.GPSTracker;
-import com.example.hobbit.util.ImageProcess;
-import com.example.hobbit.util.Mission;
+import com.example.hobbit.R;
+import com.example.pics.util.AppPrefs;
+import com.example.pics.util.Constants;
+import com.example.pics.util.Database;
+import com.example.pics.util.GPSTracker;
+import com.example.pics.util.ImageProcess;
+import com.example.pics.util.Mission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -35,7 +36,7 @@ public class CreateMissionActivity extends Activity {
 
     private static final String TAG = "hobbit" + CreateMissionActivity.class.getSimpleName();
     private GPSTracker gps;
-    private ImageView imageViewPicPreview, buttonSubmit;
+    private ImageView imageViewPicPreview, buttonSubmit, buttonCancel;
     private EditText editTextMissionTitle, editTextHint;
     private String missionTitle, hint;
     private double longitude, latitude;
@@ -71,6 +72,8 @@ public class CreateMissionActivity extends Activity {
         editTextMissionTitle = (EditText) findViewById(R.id.edittext_create_mission_title);
         editTextHint = (EditText) findViewById(R.id.edittext_create_mission_hint);
         buttonSubmit = (ImageView) findViewById(R.id.button_create_mission_submit);
+        buttonCancel = (ImageView) findViewById(R.id.button_create_mission_exit);
+        
         Intent intent = getIntent();
         mPhotoAbsolutePath = (String) intent.getExtras().get(Constants.INTENT_EXTRA_PHOTO_ABS_PATH);
         photoBitmap = ImageProcess.getBitmapFromMemCache(mPhotoAbsolutePath);
@@ -82,6 +85,34 @@ public class CreateMissionActivity extends Activity {
             editTextMissionTitle.setText("Re :" + parentMission.getTitle());
         }
 
+        addCancelButton();
+        addZoomImageButton(photoBitmap);
+        addSubmitButton();
+    }
+
+    private void addCancelButton() {
+        buttonCancel.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
+    }
+    
+    private void addZoomImageButton(final Bitmap bitmap) {
+        imageViewPicPreview.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                final Intent intent = new Intent(getApplicationContext(), ZoomImageActivity.class)
+                        .putExtra(Constants.INTENT_EXTRA_PHOTO_BITMAP, bitmap);
+                startActivity(intent);
+            }
+        });
+    }
+    
+    private void addSubmitButton(){
         buttonSubmit.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -106,12 +137,13 @@ public class CreateMissionActivity extends Activity {
             }
         });
     }
-
+    
     private void uploadPhotoToAWSS3(Mission mission) {
         Intent intent = new Intent(this, S3UploaderActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
         Log.d(TAG, "S3Uploder is called to upload the photo with unique id from mongodb");
         startActivity(intent);
+        finish();
     }
 
     private void getGPSLocation() {
@@ -195,6 +227,7 @@ public class CreateMissionActivity extends Activity {
             document.put(Constants.USER_ID, mission.getUserId());
             document.put(Constants.MISSION_TITLE, mission.getTitle());
             document.put(Constants.MISSION_HINT, mission.getHint());
+            document.put(Constants.MISSION_DATE, mission.getDate());
             document.put(Constants.MISSION_COUNT_VIEW, 0);
             document.put(Constants.MISSION_COUNT_TRY, 0);
             document.put(Constants.MISSION_COUNT_SUCCESS, 0);

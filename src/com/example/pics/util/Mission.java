@@ -1,5 +1,6 @@
-package com.example.hobbit.util;
+package com.example.pics.util;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 
 @SuppressWarnings("serial")
@@ -14,6 +15,7 @@ public class Mission implements Serializable{
     private String thumnailUrl = "";
     private String parentMissionId = "None";
     private String parentUserId = "None";
+    private Date date;
 
     private double longitude, latitude;
     private User user;
@@ -30,6 +32,15 @@ public class Mission implements Serializable{
         this.hint = hint;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.date = new Date();
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    public Date getDate() {
+        return date;
     }
 
     public String getUserId() {

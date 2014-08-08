@@ -45,7 +45,7 @@
 	            android:id="@+id/textview_cell_main_mission_location"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Yellowknife, Canada"
+	            android:text="South Korea"
 	            android:textColor="#1b1b1b"
 	            android:textSize="10sp"
 	            android:textStyle="bold" />
@@ -56,7 +56,7 @@
             android:id="@+id/textview_cell_main_mission_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="by iamochanghoon"
+            android:text="by anonymous"
             android:textColor="#bbbab8"
             android:textSize="12sp" />
         
@@ -67,12 +67,6 @@
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
-            
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:src="@drawable/entertainicon"/>
             
             <ImageView
                 android:layout_width="wrap_content"
@@ -99,7 +93,7 @@
                 android:id="@+id/textview_cell_main_mission_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1526"
+                android:text="0"
                 android:textColor="#454545" />
             
             <ImageView
@@ -112,7 +106,7 @@
                 android:id="@+id/textview_cell_main_mission_star_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.5"
+                android:text="0"
                 android:textColor="#454545" />
             
             <ImageView
@@ -125,7 +119,7 @@
                 android:id="@+id/textview_cell_main_mission_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="321"
+                android:text="0"
                 android:textColor="#454545" />
             
         </LinearLayout>

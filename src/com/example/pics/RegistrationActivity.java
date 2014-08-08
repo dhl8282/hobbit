@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,10 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.hobbit.util.AppPrefs;
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.Database;
-import com.example.hobbit.util.User;
+import com.example.pics.util.AppPrefs;
+import com.example.pics.util.Constants;
+import com.example.pics.util.Database;
+import com.example.pics.util.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -34,13 +34,14 @@ public class RegistrationActivity extends Activity {
         hobbitUser = (User) getIntent().getSerializableExtra(Constants.USER_OBJECT);
         Log.d(TAG, "Logged in successfully as " + hobbitUser.getFirstname());
         AppPrefs appPrefs = new AppPrefs(getApplicationContext());
-        appPrefs.setUserId(hobbitUser.getUserId()); 
+        appPrefs.setUserId(hobbitUser.getUserId());
+        appPrefs.setUserName(hobbitUser.getFirstname() + " " + hobbitUser.getLastname());
     }
 
     private void showMissionList() {
         // TODO : rename EnterMissionActivity
         // TODO : delete MainMenuActivity
-        Intent intent = new Intent(this, EnterMissionActivity.class);
+        Intent intent = new Intent(this, MainPageActivity.class);
         if (hobbitUser != null) {
             intent.putExtra(Constants.USER_OBJECT, hobbitUser);
         }

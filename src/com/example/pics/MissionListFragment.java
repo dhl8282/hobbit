@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,10 +24,10 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.example.hobbit.R;
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.Database;
-import com.example.hobbit.util.GPSTracker;
-import com.example.hobbit.util.Mission;
+import com.example.pics.util.Constants;
+import com.example.pics.util.Database;
+import com.example.pics.util.GPSTracker;
+import com.example.pics.util.Mission;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,6 +59,8 @@ public class MissionListFragment extends ListFragment {
 //      Toast.makeText(getActivity(), "Item " + pos + " was clicked" + a, Toast.LENGTH_SHORT).show();
       Intent intent = new Intent(getActivity(), MissionActivity.class);
       intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
+      UpdateMissionTask task = new UpdateMissionTask();
+      task.execute(mission.getMissionId());
       startActivity(intent);
     }
     
@@ -129,14 +131,13 @@ public class MissionListFragment extends ListFragment {
             lat = (Double) loc.get(1);
 
             missionId = obj.get(Constants.MISSION_MONGO_DB_ID).toString();
-            UpdateMissionTask task = new UpdateMissionTask();
-            task.execute(missionId);
 
             Mission mission = new Mission(title, hint, lng, lat);
             mission.setMissionId(missionId);
             mission.setPhotoUrl(Constants.makeOriginalUrl(missionId));
             mission.setThumnailUrl(Constants.makeThumnailUrl(missionId));
             mission.setUserId(userId);
+            mission.setDate(obj.getDate(Constants.MISSION_DATE));
 
             return mission;
         }

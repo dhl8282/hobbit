@@ -71,7 +71,7 @@
             android:layout_marginRight="2dp"
             android:layout_toLeftOf="@id/layout_header_mission_detail_buttons"
             android:scaleType="centerCrop"
-            android:src="@drawable/dummyphoto" />
+            android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
         
     </RelativeLayout>
     
@@ -109,7 +109,7 @@
                 android:id="@+id/textview_header_mission_detail_likecount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="298"
+                android:text="0"
                 android:textColor="#454545" />
             
             <TextView
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="Yellowknife, Canada"
+                    android:text="South Korea"
                     android:textColor="#1b1b1b"
                     android:textStyle="bold" />
                 
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="by na0000yi"
+                    android:text="by anonymous"
                     android:textColor="#b1b0ae" />
                 
             </LinearLayout>
@@ -233,18 +233,6 @@
             android:layout_marginRight="3dp"
             android:src="@drawable/entertainicon"/>
         
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="3dp"
-            android:src="@drawable/entertainicon"/>
-        
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="3dp"
-            android:src="@drawable/entertainicon"/>
-        
     </LinearLayout>
 
     <LinearLayout
@@ -262,7 +250,7 @@
             android:id="@+id/textview_header_mission_detail_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15"/>
+            android:text="0"/>
         
     </LinearLayout>
     

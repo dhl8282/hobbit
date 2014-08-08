@@ -22,5 +22,19 @@
     <string name="ok">OK</string>
     <string name="uploading">Uploading…</string>
     <string name="loading">Loading…</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+
+    <string-array name="menus">
+        <item>Quests created by me</item>
+        <item>Quests done by me</item>
+        <item>Quests kept by me</item>
+        <item>My Friends</item>
+        <item>Add Friends</item>
+        <item>Account</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="title_activity_prepare_validation">PrepareValidationActivity</string>
 
 </resources>

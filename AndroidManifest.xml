@@ -16,8 +16,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar">
-        <activity android:name="com.example.hobbit.StartActivity" >
+        android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name="com.example.pics.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,12 +25,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.hobbit.RegistrationActivity"
+            android:name="com.example.pics.RegistrationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.CreateMissionActivity"
+            android:name="com.example.pics.CreateMissionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
@@ -40,44 +40,49 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.EnterMissionActivity"
+            android:name="com.example.pics.MainPageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.PrepareCreateMissionActivity"
+            android:name="com.example.pics.PrepareCreateMissionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.S3UploaderActivity"
+            android:name="com.example.pics.S3UploaderActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.MissionActivity"
+            android:name="com.example.pics.MissionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.ZoomImageActivity"
+            android:name="com.example.pics.ZoomImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.MapActivity"
+            android:name="com.example.pics.MapActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.BaseActivity"
+            android:name="com.example.pics.BaseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.hobbit.ValidateActivity"
+            android:name="com.example.pics.ValidateActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.pics.PrepareValidationActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
         </activity>
 
         <meta-data
@@ -89,7 +94,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-	</application>
+    </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

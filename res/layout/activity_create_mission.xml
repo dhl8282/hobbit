@@ -60,7 +60,7 @@
 	            android:id="@+id/textview_create_mission_location"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Yellowknife, Canada"
+	            android:text="South Korea"
 	            android:textColor="#444444" />
 	        
         </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.hobbit.util;
+package com.example.pics.util;
 
 import android.app.AlertDialog;
 import android.app.Service;

@@ -1,4 +1,4 @@
-package com.example.hobbit.util;
+package com.example.pics.util;
 
 import android.app.Activity;
 import android.content.Context;

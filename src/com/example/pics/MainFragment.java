@@ -1,4 +1,4 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.User;
+import com.example.hobbit.R;
+import com.example.pics.util.Constants;
+import com.example.pics.util.User;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;

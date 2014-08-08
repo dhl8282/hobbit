@@ -12,7 +12,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package com.example.hobbit;
+package com.example.pics;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,9 +43,10 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.hobbit.util.Constants;
-import com.example.hobbit.util.ImageProcess;
-import com.example.hobbit.util.Mission;
+import com.example.hobbit.R;
+import com.example.pics.util.Constants;
+import com.example.pics.util.ImageProcess;
+import com.example.pics.util.Mission;
 
 public class S3UploaderActivity extends Activity {
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -84,6 +85,7 @@ public class S3UploaderActivity extends Activity {
         Intent intent = new Intent(this, MissionActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_MISSION, mission);
         startActivity(intent);
+        finish();
     }
     // Display an Alert message for an error or failure.
     protected void displayAlert(String title, String message) {

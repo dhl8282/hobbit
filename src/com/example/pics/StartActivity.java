@@ -1,7 +1,9 @@
-package com.example.hobbit;
+package com.example.pics;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.example.hobbit.R;
 
 import android.content.Context;
 import android.content.Intent;
