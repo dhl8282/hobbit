@@ -119,7 +119,7 @@ public class MissionActivity extends Activity{
             missionTitle.setText(mission.getTitle());
             hintContent.setText(mission.getHint());
             createdDate.setText(mission.getDate().toString());
-            userName.setText("by " + new AppPrefs(getApplicationContext()).getUserName());
+//            userName.setText("by " + new AppPrefs(getApplicationContext()).getUserName());
 
             if (!mission.getLocalPhotoPath().isEmpty()) {
                 showPhotoFromLocal(mission.getLocalPhotoPath());
@@ -214,22 +214,23 @@ public class MissionActivity extends Activity{
                 .title("You"));
         }
 
+        makeMissionMarkersInMap(map, mission);
+        
         if (currentLocation != null) {
             //Move the camera instantly to mark with a zoom of 12.
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             // Zoom in, animating the camera.
             map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
         }
-        makeMissionMarkersInMap(map, mission);
     }
     
     private void makeMissionMarkersInMap(GoogleMap map, Mission mission) {
+        Log.d(TAG, "Mission is shown in the map");
         LatLng mark = new LatLng(mission.getLatitude(), mission.getLongitude());
         map.addMarker(new MarkerOptions()
                 .position(mark)
                 .title(mission.getTitle())
                 .snippet(mission.getHint()));
-    
     }
     
 }

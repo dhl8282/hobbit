@@ -160,7 +160,7 @@ public class CreateMissionActivity extends Activity {
             // can't get location
             // GPS or Network is not enabled
             // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
+//            gps.showSettingsAlert();
         }
     }
 
@@ -253,7 +253,7 @@ public class CreateMissionActivity extends Activity {
             missionAndPhotoId = (ObjectId) document.get(Constants.MISSION_MONGO_DB_ID);
             updateParentMissionToDB(parentCollection);
             
-            mission.setMongoDBId(missionAndPhotoId.toString());
+            mission.setMissionId(missionAndPhotoId.toString());
             Log.d(TAG, "Mission is created in DB with the id " + missionAndPhotoId.toString());
         }
     }
@@ -277,6 +277,7 @@ public class CreateMissionActivity extends Activity {
                 return;
             }
             BasicDBObject query = new BasicDBObject();
+            Log.d(TAG, "@@@@@@@@@@@@@@ " + missionId);
             query.put(Constants.MISSION_MONGO_DB_ID, new ObjectId(missionId));
             BasicDBObject incValue = new BasicDBObject(Constants.MISSION_COUNT_TRY, Constants.ONE);
             BasicDBObject intModifier = new BasicDBObject(Database.MONGODB_INCREMENT, incValue);

@@ -4,8 +4,8 @@ public class Constants {
     public static final String PICTURE_DIR = "/Pictures/";
     public static final String HOBBIT_DIR = "/Hobbit/";
     public static final String HTTP_AP_NOEA_1 = "https://s3-ap-northeast-1.amazonaws.com";
-    public static final String AWS_ACCESS_KEY_ID = "AKIAIGZDKFA4PO4VYRBA";
-    public static final String AWS_SECRET_KEY = "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";
+    public static final String AWS_ACCESS_KEY_ID = "";
+    public static final String AWS_SECRET_KEY = "";
 
     public static final String PICTURE_BUCKET_ORIGINAL = "bucket-for-hobbit-original";
     public static final String PICTURE_BUCKET_THUMNAIL = "bucket-for-hobbit-thumnail";
@@ -54,7 +54,7 @@ public class Constants {
 
     public static final int ONE = 1;
     public static final int DEFAULT_VALIDATION_COUNT = 10;
-    public static final int DEFAULT_MISSION_NUMBER = 10;
+    public static final int DEFAULT_MISSION_NUMBER = 50;
     public static final int DEFAULT_PICTURE_LENGTH = 400;
     public static final int DEFAULT_PICTURE_QUALITY = 30;
     public static final int IMAGE_QUALITY_FULL = 100;

@@ -10,7 +10,6 @@ public class Mission implements Serializable{
     private String userId = "";
     private String missionId = "";
     private String localPhotoPath = "";
-    private String mongoDBId = "";
     private String photoUrl = "";
     private String thumnailUrl = "";
     private String parentMissionId = "None";
@@ -114,15 +113,7 @@ public class Mission implements Serializable{
     public void setLocalPhotoPath(String localPhotoPath) {
         this.localPhotoPath = localPhotoPath;
     }
-
-    public String getMongoDBId() {
-        return mongoDBId;
-    }
-
-    public void setMongoDBId(String mongoDBId) {
-        this.mongoDBId = mongoDBId;
-    }
-
+    
     public String getPhotoUrl() {
         return photoUrl;
     }

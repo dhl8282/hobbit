@@ -72,7 +72,7 @@ public class S3UploaderActivity extends Activity {
         s3Client.setRegion(Region.getRegion(Regions.AP_NORTHEAST_1));
         Mission mission = (Mission) getIntent().getExtras().get(Constants.INTENT_EXTRA_MISSION);
         String filePath = mission.getLocalPhotoPath();
-        String id = mission.getMongoDBId();
+        String id = mission.getMissionId();
         if (id.equals("")) {
             Log.e(TAG, "Mission id is null");
         }
